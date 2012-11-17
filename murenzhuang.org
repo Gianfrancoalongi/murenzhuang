@@ -182,7 +182,6 @@ Output from this usage would be
 #+END_EXAMPLE
 
 
-
 * Base features
 
 The features should preferrably be small and lightweight with little or no 
@@ -285,4 +284,29 @@ The resulting system description with these two implemented would then be
 
 This means that the two features of the program is to take X from STDIN just
 as it is, and the other source if a file at ./this which holds binary encoded data.
+
+
+** Y 
+
+Y is the output source, just like X and ⍟, it may be modified by a composition 
+based on a main ∆ and modifier ∇.
+
+*** main components
+
+The output may be pushed to STDOUT, to a FILE and a SOCKET, these are the proposed 
+destinations. 
+
+| ∆ (main)     | Comment                                            |
+|--------------+----------------------------------------------------|
+| STDOUT       | Print to screen                                    |
+| FILE(PATH)   | Write result to fine on disk at PATH               |
+| SOCKET(PORT) | Write result to established TCP connection on PORT |
+
+*** modifiers
+
+At the moment, I can not think of any good modifiers for Y as
+X is mutated as a result of ⍟ - this may be enough.
+
+
+
 
