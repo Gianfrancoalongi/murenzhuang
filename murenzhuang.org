@@ -240,13 +240,49 @@ The resulting system description with these two implemented would then be
 Remember that both features may be turned on at the same time.
 This would result in "ldor wlloelh" (one of two combinations).
 
-
 ** X
 
-Similarly X can be described by combining main components ∆ with modifiers ∇.
+Similarly, the base data source X can be described by combining main components ∆ with modifiers ∇,
+these will not be the same 'type' of modifiers and main components.
 
 *** main components
 
-| ∆ (main)      | type              |
-| "hello world" | fixed base string |
-|               |                   |
+| ∆ (main)     | Comment (base data source X is taken from)        |
+|--------------+---------------------------------------------------|
+| "string"     | fixed text "string"                               |
+| STDIN        | from STDIN                                        |
+| FILE(PATH)   | from a file at PATH, all lines read at once       |
+| SOCKET(PORT) | from reading data on TCP socket connection @ PORT |
+
+*** modifiers
+
+| ∇ (modifier) | Comment                                                   |
+|--------------+-----------------------------------------------------------|
+| id           | identity - no change                                      |
+| XML          | format is XML - X is embedded and needs to be extracted   |
+| JSON         | format is JSON - X is embedded and needds to be extracted |
+| binary       | data is binary encoded, and needs to be decoded           |
+
+
+  
+
+*** elements by combining ∆ and ∇
+
+An X base data source can be constructed by combining the ∆ and ∇, just as for ⍟, 
+some quick examples.
+
+- STDIN-id
+- FILE(./this)-binary
+
+The resulting system description with these two implemented would then be 
+
+#+BEGIN_EXAMPLE
+   X ← [ STDIN-id, FILE(./this)-binary ]
+   ⍟ ← id
+   Y ← STDOUT
+   X ⍟ → Y
+#+END_EXAMPLE
+
+This means that the two features of the program is to take X from STDIN just
+as it is, and the other source if a file at ./this which holds binary encoded data.
+
