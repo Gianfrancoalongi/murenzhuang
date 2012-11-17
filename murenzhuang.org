@@ -186,24 +186,67 @@ Output from this usage would be
 * Base features
 
 The features should preferrably be small and lightweight with little or no 
-dependency on external interfaces. They should not be of pure academic nature,
-easily solvable with 'the right formula'.
+dependency on external interfaces. They should not be of the 'project euler' 
+academic nature where you solve them with 'the right formula'.
 
 Here I just supply a small base set for this - with a short description of 
 what is to be expected once implemented, using the notation described in 'Formalisation'
 
-| name  | element of | effect                               |
-|-------+------------+--------------------------------------|
-| rev   | ⍟          | reverse X                            |
-| rev2  | ⍟          | reverse every second element in X    |
-| revHT | ⍟          | reverse first and last element in X  |
-| rev1H | ⍟          | reverse first half of X              |
-| rev2H | ⍟          | reverse second half of X             |
-| cap   | ⍟          | capitalize X                         |
-| cap2  | ⍟          | capitalize every second element in X |
-| capHT | ⍟          | capitalize first and last element in X |
+** ⍟
+
+To save typing and space, the combinations on ⍟ can be written in a more precise
+form using a  combination of a main component ∆ (i.e rev/cap/bin) with a ∇ modifier (whole/half/first half).
 
 
+*** main components
+
+| ∆ (main) | effect                                      | Example "hello world" |
+|----------+---------------------------------------------+-----------------------|
+| id       | identity                                    | hello world           |
+| rev      | reverse elements in X                       | dlrow olleh           |
+| cap      | capitalise elements in X                    | HELLO WORLD           |
+| bin      | binary encode elements in X (ASCII value)   | 1101000....           |
+| lower    | lowercase elements in X                     | hello world           |
+| dec      | decimal encode elements in X (ASCII code)   | 104101...             |
+| switch   | switch elements in X with neighbor to right | ehll oowlrd           |
+
+*** modifiers
+
+| ∇ (modifier) | effect                      |
+|--------------+-----------------------------|
+| whole        | whole of X                  |
+| 2            | every second element in X   |
+| HT           | first and last element in X |
+| 1H           | first half of X             |
+| 2H           | second half of X            |
+
+*** elements by combining  ∆ and ∇
+
+An X mutator can now be constructed by combining a main component and a modifier.
+Some quick examples
+
+- rev-whole 
+- switch-HT
+
+The resulting system description with these two implemented would then be
+
+#+BEGIN_EXAMPLE
+  X ← "hello world"
+  ⍟ ← [ rev-whole, switch-HT ]
+  Y ← STDOUT
+  X ⍟ → Y
+#+END_EXAMPLE
+
+Remember that both features may be turned on at the same time.
+This would result in "ldor wlloelh" (one of two combinations).
 
 
+** X
 
+Similarly X can be described by combining main components ∆ with modifiers ∇.
+
+*** main components
+
+| ∆ (main)      | type              |
+| "hello world" | fixed base string |
+|               |                   |
