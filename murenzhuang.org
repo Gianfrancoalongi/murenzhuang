@@ -24,6 +24,9 @@ You must at all times have 100% code coverage.
 
 You must at all times only have the allowed features implemented.
 
+You start at 'Root program' and loop on 'Adding or removing features'
+until you feel you have practiced enough.
+
 ** Root program
 
 Start by writing the root program satisfying the following requirement
@@ -77,7 +80,6 @@ Refactor
 Ensure 100% coverage
 Add Chosen to Allowed
 #+END_EXAMPLE
-
 
 
 ** Loop
@@ -186,6 +188,21 @@ Output from this usage would be
 The features should preferrably be small and lightweight with little or no 
 dependency on external interfaces. They should not be of pure academic nature,
 easily solvable with 'the right formula'.
+
+Here I just supply a small base set for this - with a short description of 
+what is to be expected once implemented, using the notation described in 'Formalisation'
+
+| name  | element of | effect                               |
+|-------+------------+--------------------------------------|
+| rev   | ⍟          | reverse X                            |
+| rev2  | ⍟          | reverse every second element in X    |
+| revHT | ⍟          | reverse first and last element in X  |
+| rev1H | ⍟          | reverse first half of X              |
+| rev2H | ⍟          | reverse second half of X             |
+| cap   | ⍟          | capitalize X                         |
+| cap2  | ⍟          | capitalize every second element in X |
+| capHT | ⍟          | capitalize first and last element in X |
+
 
 
 
