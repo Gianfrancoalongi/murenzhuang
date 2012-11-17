@@ -135,6 +135,8 @@ to capitalize every second letter in the text.
    X  ⍟ → Y 
 #+END_EXAMPLE
 
+* As command line program (if you want to)
+
 This is good enough, but how would such a program look like from the command line?
 How do we specify which feature we to be executed? Switches and flag arguments.
 The program described in the above notation would have the following '--help' output.
@@ -176,5 +178,15 @@ Output from this usage would be
 #+BEGIN_EXAMPLE
  dLrOw OlLeH
 #+END_EXAMPLE
+
+
+
+* Base features
+
+The features should preferrably be small and lightweight with little or no 
+dependency on external interfaces. They should not be of pure academic nature,
+easily solvable with 'the right formula'.
+
+
 
 
