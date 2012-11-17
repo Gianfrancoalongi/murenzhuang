@@ -1,0 +1,180 @@
+#+OPTIONS: ^:{}
+
+* What is Mu Ren Zhuang ?
+
+It is an excercise form to practice *code flexibility*.
+I have seen many katas and exercises to practice specific 
+techniques - popular examples are Refactoring, Problem Solving using TDD
+and just general problem solving with highly academic subjects
+or more diverse fields of programming.
+
+The name Mu Ren Zhuang actually refers to the wooden training
+dummy popularly used in Wing Chun and Jet Kune Do, for practicing
+strikes / blocks and kicks while maintaining your chi.
+http://en.wikipedia.org/wiki/Mu_ren_zhuang
+
+Likewise - to keep our code and mind flexible - we must flex it.
+This exercise format aims at providing good practice in cyclicaly maintaining
+the code flexible. As with any true product, it will change and get / lose
+features over time. 
+
+* How does it work?
+
+You must at all times have 100% code coverage.
+
+You must at all times only have the allowed features implemented.
+
+** Root program
+
+Start by writing the root program satisfying the following requirement
+
+#+BEGIN_EXAMPLE
+  print "hello world" on the screen.
+#+END_EXAMPLE
+
+The set of allowed features is now ⍬ (empty set)
+
+** Adding or removing features 
+
+#+BEGIN_EXAMPLE
+Allowed ← Your allowed (implemented) features
+Available ← All features in Mu Ren Zhuang
+
+IF Allowed ≠ Available
+    IF Allowed ≠ ⍬
+        Randomly do one of [ 'Remove an imeplemented feature'
+                            ,'Add a new feature' ]
+        
+    ELSE 
+        do 'Add a new feature'
+    END
+ELSE
+    do 'Remove an imeplemented feature'
+END
+#+END_EXAMPLE
+
+*** Remove an implemented feature
+
+#+BEGIN_EXAMPLE
+Allowed ← Your allowed (implemented) features
+Chosen  ← random one of Allowed
+Remove the Chosen feature from your implementation
+Remove all tests associated with Chosen feature
+Refactor
+Ensure 100% coverage
+Remove  Chosen from Allowed
+#+END_EXAMPLE
+
+*** Add a new feature
+
+#+BEGIN_EXAMPLE
+Allowed ← Your allowed (implemented) features
+Available ← All features in Mu Ren Zhuang
+Free ← All F ∊ Available ∧ not F ∊ Allowed
+Chosen ← random one of Free
+Implement Chosen (preferrably using TDD)
+Refactor
+Ensure 100% coverage
+Add Chosen to Allowed
+#+END_EXAMPLE
+
+
+
+** Loop
+
+If you feel finished - stop. 
+Otherwise do 'Adding or removing features'
+
+* Formalisation
+
+Starting from the root 
+
+#+BEGIN_EXAMPLE
+ print "hello world" to screen
+#+END_EXAMPLE
+
+with another notation 
+
+#+BEGIN_EXAMPLE
+   X ← "hello world"
+   ⍟ ← id
+   Y ← STDOUT   
+   X  ⍟ → Y 
+#+END_EXAMPLE
+
+In this notation, id means that the only applied function on X is the identity,
+meaning we pass it along unmodified. Additionally →  means that the 
+Left Hand Side (LHS) is sent to the Right Hand Side (RHS).
+
+This notation can now support additional features, the notation
+to signify multiple choices and conditional execution are the
+brackets '[' and ']'. The following example denotes the syntax
+of supporting the features passing "hell world" to STDOUT and FIE, 
+as well as the reversed version.
+
+#+BEGIN_EXAMPLE
+   X ← "hello world"
+   ⍟ ← [ id, reversal ]
+   Y ← [ STDOUT, FILE ]
+   X  ⍟ → Y 
+#+END_EXAMPLE
+
+As there are two functions to be applied in ⍟ on X,
+this now signifies that there is a condition. This 
+is the program features - ⍟ is the Allowed feature
+set.
+
+Additionally, assume the data to be modified is not only "hello world",
+but also to be read from a file (XML), or from a socket! Also add the ability 
+to capitalize every second letter in the text.
+
+#+BEGIN_EXAMPLE
+   X ← [ FILE(XML), "hello world", SOCKET ]
+   ⍟ ← [ id, reversal, capitalize_every_second ]
+   Y ← [ STDOUT, FILE ]
+   X  ⍟ → Y 
+#+END_EXAMPLE
+
+This is good enough, but how would such a program look like from the command line?
+How do we specify which feature we to be executed? Switches and flag arguments.
+The program described in the above notation would have the following '--help' output.
+
+#+BEGIN_EXAMPLE
+$ program --help
+
+  usage: program [-b BASE] [-m MANIP] [-o OUTPUT]
+  
+  BASE has the following options 
+     i      - internal text "hello world"
+     f PATH - PATH to XML file with data inside <exercise/data> element
+     s PORT - socket listeningon port PORT receives text data
+  
+  MANIP has the following options
+     i  - do nothing
+     r  - reverse the data
+     c2 - capitalize every second letter in the data
+
+  OUTPUT has the following options
+     s      - STDOUT
+     f PATH - output to file at PATH
+
+#+END_EXAMPLE
+
+Of course, multiple switches may be used at the same time, the program described
+below can output "hello world", both to STDOUT and to a file at the same time,
+reversing the data and capitalizing every 2nd letter.
+
+#+BEGIN_EXAMPLE
+   X ← "hello world"
+   ⍟ ← [ reversal, capitalize_every_second ]
+   Y ← [ STDOUT, FILE ]
+   X  ⍟ → Y 
+#+END_EXAMPLE
+
+Output from this usage would be
+
+#+BEGIN_EXAMPLE
+ dLrOw OlLeH
+#+END_EXAMPLE
+
+
