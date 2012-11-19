@@ -24,8 +24,9 @@ You must at all times have 100% code coverage.
 
 You must at all times only have the allowed features implemented.
 
-You start at 'Root program' and loop on 'Adding or removing features'
-until you feel you have practiced enough.
+You start at 'Root program' and continuously add or remove (randomly). 
+Sometimes you will be adding many in a row, and then suddenly remove one of them,
+then later removing and adding until you feel you have practiced enough.
 
 ** Root program
 
@@ -39,22 +40,28 @@ The set of allowed features is now ⍬ (empty set)
 
 ** Adding or removing features 
 
+Next, you randomly add a new feature, or remove a feature.
+
 #+BEGIN_EXAMPLE
 Allowed ← Your allowed (implemented) features
 Available ← All features in Mu Ren Zhuang
 
 IF Allowed ≠ Available
     IF Allowed ≠ ⍬
-        Randomly do one of [ 'Remove an imeplemented feature'
-                            ,'Add a new feature' ]
+        Randomly pick one of 
+               * 'Remove an imeplemented feature'
+               * 'Add a new feature'
         
     ELSE 
-        do 'Add a new feature'
+        * 'Add a new feature'
     END
 ELSE
-    do 'Remove an imeplemented feature'
+    * 'Remove an imeplemented feature'
 END
 #+END_EXAMPLE
+
+The description of each 'Remove an imeplemented feature' and 'Add a new feature'
+follows.
 
 *** Remove an implemented feature
 
