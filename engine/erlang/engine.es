@@ -20,13 +20,29 @@ loop(State) ->
     end.
 
 new_state() ->
-    #state{available_features = ["reverse"]}.
+    X_base = ["goodbye world","stdin","file","socket"],
+    X_mod = ["id","xml","json","binary"],
+    O_base = ["id","rev","cap","bin","lower","dec","switch"],
+    O_mod = ["whole","2","HT","1H","2H"],
+    Y_base = ["stdout","file","socket"],
+    Y_mod = [],
+    Configuration = [ {"X:",{X_base,X_mod}},
+		      {"O:",{O_base,O_mod}},
+		      {"Y:",{Y_base,Y_mod}}
+		    ],
+    #state{available_features = generate_feature_pairs(Configuration)}.
+
+
+generate_feature_pairs([]) -> [];
+generate_feature_pairs([{Prefix,{Base,Mod}}|T]) -> 
+    Gens = [ Prefix++B++M || B <- Base,M <- Mod],
+    Gens ++ generate_feature_pairs(T).
 
 print_menu() ->
     io:format("~n"
 	      " ***** MuRenZhuang ***** ~n"
 	      " (n) - next step~n"
-	      " (c) - current state~n"	      
+	      " (c) - current state~n"
 	      " (q) - quit~n"
 	      "~n",
 	      []).
