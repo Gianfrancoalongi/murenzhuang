@@ -1,23 +1,15 @@
 -module(mrz_tests).
 -include_lib("eunit/include/eunit.hrl").
 
-mrz_run_nooptions_test_() ->
-    {setup,
+mrz_options_test_() ->
+    {foreach,
      fun setup/0,
      fun cleanup/1,
-     fun no_option_test_function/1}.
-
-mrz_run_rev2_test_() ->
-    {setup,
-     fun setup/0,
-     fun cleanup/1,
-     fun rev2_test_function/1}.
-
-mrz_run_rev2H_test_() ->
-    {setup,
-     fun setup/0,
-     fun cleanup/1,
-     fun rev2H_test_function/1}.
+     [
+      fun no_option_test_function/1,      
+      fun rev2_test_function/1,
+      fun rev2H_test_function/1
+     ]}.
 
 rev2H_test_function(FileHandle) ->
     fun() ->
