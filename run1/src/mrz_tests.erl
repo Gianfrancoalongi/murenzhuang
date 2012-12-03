@@ -13,6 +13,21 @@ mrz_run_rev2_test_() ->
      fun cleanup/1,
      fun rev2_test_function/1}.
 
+mrz_run_rev2H_test_() ->
+    {setup,
+     fun setup/0,
+     fun cleanup/1,
+     fun rev2H_test_function/1}.
+
+rev2H_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([rev2H]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"hello dlrow">>,Res)
+    end.
+    
+
 rev2_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
