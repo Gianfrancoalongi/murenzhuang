@@ -1,0 +1,12 @@
+{application, mrz,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { mrz_app, []}},
+  {env, []}
+ ]}.
