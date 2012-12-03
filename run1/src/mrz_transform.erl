@@ -1,6 +1,7 @@
 -module(mrz_transform).
 -export([rev2/1,
-	 cap2H/1
+	 cap2H/1,
+	 id/1
 	]).
 
 rev2(String) ->
@@ -10,3 +11,6 @@ rev2(String) ->
 cap2H(String) ->
     [A,B]=string:tokens(String," "),
     A++" "++string:to_upper(B).
+
+id(X) ->
+    X.

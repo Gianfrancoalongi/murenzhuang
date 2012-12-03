@@ -1,12 +1,11 @@
 -module(mrz).
 -export([run/1]).
 
-run([]) ->
-    io:format("~s",[mrz_output:data()]);
-run([X]) when X == rev2 orelse X == rev2H ->
-    Output = mrz_transform:rev2(mrz_output:data()),
-    io:format("~s",[Output]);
-run([cap2H]) ->
-    Output = mrz_transform:cap2H(mrz_output:data()),
-    io:format("~s",[Output]).    
-
+run(Options) ->    
+    Lookup = [{[],fun mrz_transform:id/1},
+	      {[rev2],fun mrz_transform:rev2/1},
+	      {[rev2H],fun mrz_transform:rev2/1},
+	      {[cap2H],fun mrz_transform:cap2H/1}
+	     ],
+    Fun = proplists:get_value(Options,Lookup),
+    io:format("~s",[Fun(mrz_output:data())]).

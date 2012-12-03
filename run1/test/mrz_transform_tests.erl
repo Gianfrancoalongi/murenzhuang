@@ -6,3 +6,6 @@ rev2_test() ->
 
 cap2H_test() ->
     ?assertEqual("first SECOND",mrz_transform:cap2H("first second")).
+
+id_test() ->
+    ?assertEqual("first second",mrz_transform:id("first second")).
