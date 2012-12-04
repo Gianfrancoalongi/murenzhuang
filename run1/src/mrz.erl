@@ -12,11 +12,6 @@ seq_apply([],X) ->
 seq_apply([F|T],X) ->
     seq_apply(T,F(X)).
 
-choose_X([{input_json,File}|_]) -> 
-    {ok,R} = file:read_file(File),
-    fun() -> 
-	    mrz_data:from_json(R) 
-    end;
 choose_X([]) ->
     fun mrz_data:hello_world/0;
 choose_X([_|T]) ->
@@ -31,13 +26,5 @@ choose_Os(Options) ->
 		{cap2H,fun mrz_transform:cap2H/1},
 		{cap1H,fun mrz_transform:cap1H/1}
 	       ],
-    lists:foldr(
-      fun(Option,Acc) ->
-	      case proplists:get_value(Option,O_lookup) of
-		  undefined -> Acc;
-		  V ->
-		      [V|Acc]
-	      end
-      end,
-      [],
-      Options).
+    [ proplists:get_value(Opt,O_lookup) || Opt <- Options].
+
