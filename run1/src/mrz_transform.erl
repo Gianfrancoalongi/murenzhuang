@@ -1,11 +1,17 @@
 -module(mrz_transform).
--export([cap2H/1
+-export([cap2H/1,
+	 capHT/1
 	]).
 -export([rev2/1,
 	 revwhole/1
 	 ]).
 -export([id/1
 	]).
+
+capHT(String) ->
+    [H|T] = string:tokens(String," "),
+    [TH|TT] = lists:reverse(T),
+    string:join([string:to_upper(H)]++TT++[string:to_upper(TH)]," ").
 
 rev2(String) ->
     Words = string:tokens(String," "),

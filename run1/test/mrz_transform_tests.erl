@@ -12,3 +12,6 @@ id_test() ->
 
 revwhole_test() ->
     ?assertEqual("dnoces tsrif",mrz_transform:revwhole("first second")).
+
+capht_test() ->
+    ?assertEqual("FIRST second THIRD",mrz_transform:capHT("first second third")).

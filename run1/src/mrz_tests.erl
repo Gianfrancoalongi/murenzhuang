@@ -9,8 +9,17 @@ mrz_options_test_() ->
       fun no_option_test_function/1,      
       fun rev2_test_function/1,
       fun cap2H_test_function/1,
-      fun revwhole_test_function/1
+      fun revwhole_test_function/1,
+      fun capHT_test_function/1
      ]}.
+
+capHT_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([capHT]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"HELLO WORLD">>,Res)
+    end.
 
 revwhole_test_function(FileHandle) ->
     fun() ->
