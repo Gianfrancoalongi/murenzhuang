@@ -9,8 +9,17 @@ mrz_options_test_() ->
       fun no_option_test_function/1,      
       fun rev2_test_function/1,
       fun cap2H_test_function/1,
-      fun cap1H_test_function/1
+      fun cap1H_test_function/1,
+      fun input_from_json_test_function/1
      ]}.
+
+input_from_json_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([{input_json,"./input_data.json"}]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"hello world json file">>,Res)
+    end.
 
 cap1H_test_function(FileHandle) ->
     fun() ->
@@ -46,9 +55,18 @@ no_option_test_function(FileHandle) ->
     end.
 
 setup() ->
+    setup_json_file(),
     {ok,F} = file:open("test_res.txt",[write]),
     F.
 
 cleanup(FileHandle) ->
+    remove_json_file(),
     file:close(FileHandle),
     file:delete("test_rest.txt").
+
+setup_json_file() ->
+    Input = "{ \"data\": \"hello world json file\" }",
+    file:write_file("./input_data.json",Input).
+
+remove_json_file() ->
+    file:delete("./input_data.json").
