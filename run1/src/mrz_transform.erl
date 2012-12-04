@@ -1,15 +1,10 @@
 -module(mrz_transform).
 -export([rev2/1,
-	 rev2H/1,
 	 cap2H/1,
 	 id/1
 	]).
 
 rev2(String) ->
-    [A,B]=string:tokens(String," "),
-    A++" "++lists:reverse(B).
-
-rev2H(String) ->
     [A,B]=string:tokens(String," "),
     A++" "++lists:reverse(B).
 
