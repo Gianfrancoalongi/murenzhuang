@@ -7,8 +7,18 @@
 	]).
 
 rev2(String) ->
-    [A,B]=string:tokens(String," "),
-    A++" "++lists:reverse(B).
+    Words = string:tokens(String," "),
+    List = [ begin
+		 case N rem 2 == 0 of
+		     true ->
+			 lists:reverse(W);
+		     false ->
+			 W
+		 end
+	     end
+	     || {W,N} <- lists:zip(Words,lists:seq(1,length(Words)))
+	   ],
+    string:join(List," ").
 
 cap1H(String) ->
     List = string:tokens(String," "),
