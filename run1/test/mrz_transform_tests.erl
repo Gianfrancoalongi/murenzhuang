@@ -10,5 +10,3 @@ cap2H_test() ->
 id_test() ->
     ?assertEqual("first second",mrz_transform:id("first second")).
 
-cap1H_test() ->
-    ?assertEqual("FIRST second",mrz_transform:cap1H("first second")).
