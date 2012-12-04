@@ -1,6 +1,5 @@
 -module(mrz_transform).
--export([cap2H/1,
-	 capHT/1
+-export([capHT/1
 	]).
 -export([rev2/1,
 	 revwhole/1
@@ -29,11 +28,6 @@ rev2(String) ->
 
 revwhole(String) ->
     lists:reverse(String).
-
-cap2H(String) ->
-    List = string:tokens(String," "),
-    {A,B} = lists:split(round(length(List)/2),List),
-    string:join(A++lists:map(fun string:to_upper/1,B)," ").
 
 id(X) ->
     X.

@@ -23,7 +23,6 @@ choose_Os(Options) ->
     O_lookup = [
 		{rev2,fun mrz_transform:rev2/1},
 		{rev2H,fun mrz_transform:rev2H/1},
-		{cap2H,fun mrz_transform:cap2H/1},
 		{cap1H,fun mrz_transform:cap1H/1},
 		{revwhole,fun mrz_transform:revwhole/1},
 		{capHT,fun mrz_transform:capHT/1}
