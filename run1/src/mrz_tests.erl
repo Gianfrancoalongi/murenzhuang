@@ -10,8 +10,17 @@ mrz_options_test_() ->
       fun rev2_test_function/1,
       fun cap2H_test_function/1,
       fun cap1H_test_function/1,
-      fun input_from_json_test_function/1
+      fun input_from_json_test_function/1,
+      fun input_from_json_and_cap1h_test_function/1
      ]}.
+
+input_from_json_and_cap1h_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([{input_json,"./input_data.json"},cap1H]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"HELLO WORLD json file">>,Res)
+    end.
 
 input_from_json_test_function(FileHandle) ->
     fun() ->

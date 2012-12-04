@@ -11,8 +11,9 @@ rev2(String) ->
     A++" "++lists:reverse(B).
 
 cap1H(String) ->
-    [A,B]=string:tokens(String," "),
-    string:to_upper(A)++" "++B.
+    List = string:tokens(String," "),
+    {A,B} = lists:split(round(length(List)/2),List),
+    string:join(lists:map(fun string:to_upper/1,A)++B," ").
     
 cap2H(String) ->
     [A,B]=string:tokens(String," "),
