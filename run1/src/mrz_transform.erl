@@ -16,8 +16,9 @@ cap1H(String) ->
     string:join(lists:map(fun string:to_upper/1,A)++B," ").
     
 cap2H(String) ->
-    [A,B]=string:tokens(String," "),
-    A++" "++string:to_upper(B).
+    List = string:tokens(String," "),
+    {A,B} = lists:split(round(length(List)/2),List),
+    string:join(A++lists:map(fun string:to_upper/1,B)," ").
 
 id(X) ->
     X.
