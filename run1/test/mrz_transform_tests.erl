@@ -10,3 +10,5 @@ cap2H_test() ->
 id_test() ->
     ?assertEqual("first second",mrz_transform:id("first second")).
 
+revwhole_test() ->
+    ?assertEqual("dnoces tsrif",mrz_transform:revwhole("first second")).

@@ -2,7 +2,9 @@
 -export([cap2H/1
 	]).
 -export([rev2/1,
-	 id/1
+	 revwhole/1
+	 ]).
+-export([id/1
 	]).
 
 rev2(String) ->
@@ -18,6 +20,9 @@ rev2(String) ->
 	     || {W,N} <- lists:zip(Words,lists:seq(1,length(Words)))
 	   ],
     string:join(List," ").
+
+revwhole(String) ->
+    lists:reverse(String).
 
 cap2H(String) ->
     List = string:tokens(String," "),

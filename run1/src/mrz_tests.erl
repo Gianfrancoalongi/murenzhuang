@@ -8,8 +8,17 @@ mrz_options_test_() ->
      [
       fun no_option_test_function/1,      
       fun rev2_test_function/1,
-      fun cap2H_test_function/1
+      fun cap2H_test_function/1,
+      fun revwhole_test_function/1
      ]}.
+
+revwhole_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([revwhole]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"dlrow olleh">>,Res)
+    end.
 
 cap2H_test_function(FileHandle) ->
     fun() ->
