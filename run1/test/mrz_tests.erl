@@ -10,9 +10,18 @@ mrz_options_test_() ->
       fun rev2_test_function/1,
       fun revwhole_test_function/1,
       fun capHT_test_function/1,
-      fun lowerwhole_test_function/1
+      fun lowerwhole_test_function/1,
+      fun lower2_test_function/1
      ]}.
 
+lower2_test_function(FileHandle) ->
+    fun() ->
+	    group_leader(FileHandle,self()),
+	    mrz:run([helloworld,lower2,stdout]),
+	    {ok,Res} = file:read_file("test_res.txt"),
+	    ?assertEqual(<<"hello world">>,Res)
+    end.
+    
 lowerwhole_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
