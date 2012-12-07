@@ -8,8 +8,8 @@
 	       history = [] :: [{modifier(),feature()}]
 	      }).
 
-main([]) ->    
-    State = new_state(),
+main(Already) ->    
+    State = new_state(Already),
     loop(State).
 
 loop(State) ->
@@ -19,7 +19,7 @@ loop(State) ->
 	NS -> loop(NS)
     end.
 
-new_state() ->
+new_state(Already) ->
     X_base = ["goodbye world","stdin","file","socket"],
     X_mod = ["id","xml","json","binary"],
     O_base = ["id","rev","cap","bin","lower","dec","switch"],
@@ -30,8 +30,16 @@ new_state() ->
 		      {"O:",{O_base,O_mod}},
 		      {"Y:",{Y_base,Y_mod}}
 		    ],
-    #state{available_features = generate_feature_pairs(Configuration)}.
+    #state{available_features = generate_feature_pairs(Configuration),
+	   allowed_features = already_have(Already)
+	  }.
 
+already_have(Already) ->
+    lists:map(
+      fun(String) ->
+	      {added,erlang:list_to_atom(String)}
+      end,
+      Already).
 
 generate_feature_pairs([]) -> [];
 generate_feature_pairs([{Prefix,{Base,Mod}}|T]) -> 
