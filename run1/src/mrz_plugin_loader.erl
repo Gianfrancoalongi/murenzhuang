@@ -2,6 +2,7 @@
 -export([find_plugins/1]).
 -export([compile_plugins/1]).
 -export([load_compiled_plugins/1]).
+-export([does_plugin_exist/1]).
 
 find_plugins(Path) ->
     X_plugins = filelib:wildcard(filename:join(Path,"x_plugin_*.erl")),
@@ -25,3 +26,25 @@ load_compiled_plugins(Plugins3Tuple) ->
 	      lists:map(fun code:load_file/1,PluginCategory)
       end,
       tuple_to_list(Plugins3Tuple)).
+
+does_plugin_exist(PluginName) ->
+    Loaded = code:all_loaded(),
+    search_for_plugin_by_name(PluginName,Loaded).
+
+search_for_plugin_by_name(_,[]) ->
+    false;
+search_for_plugin_by_name(Name,[{Module,_}|T]) ->
+    NameStr = atom_to_list(Name),
+    ModStr = atom_to_list(Module),
+    Found = plugin_name_matches_module(NameStr,ModStr),
+    case Found of
+	true -> 
+	    true;
+	false ->
+	    search_for_plugin_by_name(Name,T)
+    end.
+
+plugin_name_matches_module(NameStr,ModStr) ->
+    "x_plugin_"++NameStr == ModStr orelse
+	"o_plugin_"++NameStr == ModStr orelse
+	"y_plugin_"++NameStr == ModStr.

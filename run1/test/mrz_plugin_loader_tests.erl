@@ -41,6 +41,36 @@ plugin_loader_load_compiled_plugins_test() ->
     ?assertMatch({file,_},code:is_loaded('o_plugin_E')),
     ?assertMatch({file,_},code:is_loaded('o_plugin_F')),
     ?assertMatch({file,_},code:is_loaded('y_plugin_C')),
-    ?assertMatch({file,_},code:is_loaded('y_plugin_D')).
+    ?assertMatch({file,_},code:is_loaded('y_plugin_D')),
+    
+    code:delete('x_plugin_A'),
+    code:delete('x_plugin_B'),
+    code:delete('o_plugin_E'),
+    code:delete('o_plugin_F'),
+    code:delete('y_plugin_C'),
+    code:delete('y_plugin_D').
 
+query_plugin_support_test() ->
+    Plugins_path = "../priv/plugins",
+    Res = mrz_plugin_loader:find_plugins(Plugins_path),
+    ModNames = mrz_plugin_loader:compile_plugins(Res),
+
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('A')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('B')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('C')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('D')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('E')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('F')),
+
+    mrz_plugin_loader:load_compiled_plugins(ModNames),
+
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('A')),
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('B')),
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('C')),
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('D')),
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('E')),
+    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('F')),
+
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('H')),
+    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('I')).
     
