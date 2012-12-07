@@ -1,6 +1,7 @@
 -module(mrz_plugin_loader).
 -export([find_plugins/1]).
 -export([compile_plugins/1]).
+-export([load_compiled_plugins/1]).
 
 find_plugins(Path) ->
     X_plugins = filelib:wildcard(filename:join(Path,"x_plugin_*.erl")),
@@ -17,3 +18,10 @@ compile_list_of_plugins([]) -> [];
 compile_list_of_plugins([F|T]) ->   
     {ok,Mod} = compile:file(F,[debug_info,report_errors]),
     [Mod | compile_list_of_plugins(T)].
+
+load_compiled_plugins(Plugins3Tuple) ->
+    lists:foreach(
+      fun(PluginCategory) ->
+	      lists:map(fun code:load_file/1,PluginCategory)
+      end,
+      tuple_to_list(Plugins3Tuple)).
