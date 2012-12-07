@@ -25,23 +25,22 @@ try_load_plugins(PluginList) ->
     lists:foldr(
       fun(PluginSrc,Acc) ->
 	      Base = filename:basename(PluginSrc,".erl"),
-	      Module = list_to_atom(Base),
-	      case code:is_loaded(Module) of
-		  {file,_} ->
-		      [ Module | Acc];
-		  false ->
-		      maybe_load_file(Module,Acc)
-	      end
+	      maybe_load_file(list_to_atom(Base),Acc)
       end,
       [],
       PluginList).
 	      
 
 maybe_load_file(Module,Acc) ->	      
-    case code:load_file(Module) of
-	{error,_} ->
-	    Acc;
-	{module,_} ->
-	    [ Module | Acc]
+    case code:is_loaded(Module) of
+	{file,_} ->
+	    [ Module | Acc];
+	false ->
+	    case code:load_file(Module) of
+		{error,_} ->
+		    Acc;
+		{module,_} ->
+		    [ Module | Acc]
+	    end
     end.
 	
