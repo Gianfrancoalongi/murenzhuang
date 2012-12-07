@@ -9,10 +9,7 @@ run(Options) ->
     Y:act(seq_apply(Os, X:act())).
 
 load_plugins() ->
-    Found = mrz_plugin_loader:find_plugins("../src/"),
-    Comp =  mrz_plugin_loader:compile_plugins(Found),
-    mrz_plugin_loader:load_compiled_plugins(Comp),
-    Comp.
+    mrz_plugin_loader:load_plugins("../src").
 
 seq_apply(Fs,X) ->
     lists:foldl(fun(F,R) -> F:act(R) end,X,Fs).
