@@ -61,4 +61,3 @@ query_plugin_name_test() ->
 		  ['E','F'],
 		  ['C','D']},
 		 Res).
-	

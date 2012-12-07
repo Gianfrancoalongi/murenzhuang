@@ -6,7 +6,7 @@ mrz_options_test_() ->
      fun setup/0,
      fun cleanup/1,
      [
-      fun no_option_test_function/1,      
+      fun basic_program_test_function/1,
       fun rev2_test_function/1,
       fun revwhole_test_function/1,
       fun capHT_test_function/1
@@ -15,7 +15,7 @@ mrz_options_test_() ->
 capHT_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
-	    mrz:run([capHT]),
+	    mrz:run([helloworld,capHT,stdout]),
 	    {ok,Res} = file:read_file("test_res.txt"),
 	    ?assertEqual(<<"HELLO WORLD">>,Res)
     end.
@@ -23,7 +23,7 @@ capHT_test_function(FileHandle) ->
 revwhole_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
-	    mrz:run([revwhole]),
+	    mrz:run([helloworld,revwhole,stdout]),
 	    {ok,Res} = file:read_file("test_res.txt"),
 	    ?assertEqual(<<"dlrow olleh">>,Res)
     end.
@@ -31,16 +31,16 @@ revwhole_test_function(FileHandle) ->
 rev2_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
-	    mrz:run([rev2]),
+	    mrz:run([helloworld,rev2,stdout]),
 	    {ok,Res} = file:read_file("test_res.txt"),
 	    ?assertEqual(<<"hello dlrow">>,Res)
     end.
 
 
-no_option_test_function(FileHandle) ->
+basic_program_test_function(FileHandle) ->
     fun() ->
 	    group_leader(FileHandle,self()),
-	    mrz:run([]),
+	    mrz:run([helloworld,id,stdout]),
 	    {ok,Res} = file:read_file("test_res.txt"),
 	    ?assertEqual(<<"hello world">>,Res)
     end.
