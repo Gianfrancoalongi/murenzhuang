@@ -12,3 +12,11 @@ plugin_loader_sees_plugins_test() ->
 		   "../priv/plugins/y_plugin_D.erl"]},
 		 Res).
     
+plugin_loader_compiles_pluins_test() ->
+    Plugins_path = "../priv/plugins",
+    Res = mrz_plugin_loader:find_plugins(Plugins_path),
+    ModNames = mrz_plugin_loader:compile_plugins(Res),
+    ?assertEqual({['x_plugin_A','x_plugin_B'],
+		  ['o_plugin_E','o_plugin_F'],
+		  ['y_plugin_C','y_plugin_D']},
+		 ModNames).
