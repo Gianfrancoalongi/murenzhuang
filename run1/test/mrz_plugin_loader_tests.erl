@@ -50,27 +50,15 @@ plugin_loader_load_compiled_plugins_test() ->
     code:delete('y_plugin_C'),
     code:delete('y_plugin_D').
 
-query_plugin_support_test() ->
+query_plugin_name_test() ->
     Plugins_path = "../priv/plugins",
-    Res = mrz_plugin_loader:find_plugins(Plugins_path),
-    ModNames = mrz_plugin_loader:compile_plugins(Res),
-
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('A')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('B')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('C')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('D')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('E')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('F')),
-
-    mrz_plugin_loader:load_compiled_plugins(ModNames),
-
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('A')),
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('B')),
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('C')),
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('D')),
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('E')),
-    ?assertEqual(true,mrz_plugin_loader:does_plugin_exist('F')),
-
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('H')),
-    ?assertEqual(false,mrz_plugin_loader:does_plugin_exist('I')).
-    
+    Found = mrz_plugin_loader:find_plugins(Plugins_path),
+    {Xs,Os,Ys} = mrz_plugin_loader:compile_plugins(Found),
+    Res = {lists:map(fun mrz_plugin_loader:plugin_to_feature_name/1,Xs),
+	   lists:map(fun mrz_plugin_loader:plugin_to_feature_name/1,Os),
+	   lists:map(fun mrz_plugin_loader:plugin_to_feature_name/1,Ys)},
+    ?assertEqual({['A','B'],
+		  ['E','F'],
+		  ['C','D']},
+		 Res).
+	
