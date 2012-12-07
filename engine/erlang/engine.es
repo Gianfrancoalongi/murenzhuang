@@ -31,15 +31,8 @@ new_state(Already) ->
 		      {"Y:",{Y_base,Y_mod}}
 		    ],
     #state{available_features = generate_feature_pairs(Configuration),
-	   allowed_features = already_have(Already)
+	   allowed_features = Already
 	  }.
-
-already_have(Already) ->
-    lists:map(
-      fun(String) ->
-	      {added,erlang:list_to_atom(String)}
-      end,
-      Already).
 
 generate_feature_pairs([]) -> [];
 generate_feature_pairs([{Prefix,{Base,Mod}}|T]) -> 
