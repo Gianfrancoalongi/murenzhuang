@@ -133,6 +133,26 @@ Thus, a training session can be described with the following
 5. refactor if needed
 6. go to 2
 
+** Mutator types
+
+Mutators are defined by their Buffer-number and their Transformation.
+The buffer number (Buffer-N) affects the range in which the Transformation 
+can work. Which brings us to the types of available Transformations, and
+their effect.
 
 
+*** Order [x_i]
 
+Order [x_i] - Orders the elements [x_i] according to the
+specified indices. For Buffer-N, N+1 indicates the current
+element, 1 is the first buffered element, etc.
+
+**** Examples
+If we have a Buffer-2 mutator, Order 3 2 1 will cause the
+sequence "abc" to be returned as "cba".
+
+If we have a Buffer-2 mutator, Order 3 1 will cause the 
+sequence "abc" to be returned as "ca"
+
+If we have a Buffer-2 mutator, Order 2 will cause the 
+sequence "abc" ro be returned as "b"
