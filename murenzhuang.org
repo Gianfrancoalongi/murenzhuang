@@ -2,11 +2,12 @@
 
 * What is Mu Ren Zhuang ?
 
-It is an excercise form to practice *code flexibility*.
-I have seen many katas and exercises to practice specific 
-techniques - popular examples are Refactoring, Problem Solving using TDD
-and just general problem solving with highly academic subjects
-or more diverse fields of programming.
+Mu Ren Zhuang is an infinite, procedurally generated agile excercise form
+to practice code flexibility and changing requirements.
+
+I have seen many katas and exercises to practice specific techniques, such
+as Refactoring, TDD and general algorithm application, but none that addresses
+the problem of changing requirements.
 
 The name Mu Ren Zhuang actually refers to the wooden training
 dummy popularly used in Wing Chun and Jet Kune Do, for practicing
@@ -14,305 +15,123 @@ strikes / blocks and kicks while maintaining your chi.
 http://en.wikipedia.org/wiki/Mu_ren_zhuang
 
 Likewise - to keep our code and mind flexible - we must flex it.
-This exercise format aims at providing good practice in cyclicaly maintaining
-the code flexible. As with any true product, it will change and get / lose
-features over time. 
+This exercise format aims at providing good practice in changing requirements,
+so that we may keep our programmer-energy while changing the design constantly.
 
 * How does it work?
+** In general
 
 You must at all times have 100% code coverage.
 
 You must at all times only have the allowed features implemented.
 
-You start at 'Root program' and continuously add or remove (randomly). 
-Sometimes you will be adding many in a row, and then suddenly remove one of them,
-then later removing and adding until you feel you have practiced enough.
-
-** Root program
-
-Start by writing the root program satisfying the following requirement
+You start from the Basic Program, this program consists of 2 nodes; the 'input'
+node and the 'output' node.
 
 #+BEGIN_EXAMPLE
-  print "hello world" on the screen.
+   input
+    ↓     
+   output
 #+END_EXAMPLE
 
-The set of allowed features is now ⍬ (empty set)
+Thus, this program prints everything it gets as input.
+From here, the Mu Ren Zhuang system will chose to give you a feature, or ask you
+to remove a feature. This is at random, and your training session should 
+hopefully never be the same.
 
-** Adding or removing features 
+** Node composition through input and output edges   
 
-Next, you randomly add a new feature, or remove a feature.
+Mu Ren Zhuang will describe a system for you to implement, this is done using
+nodes and edges. All nodes have an input edge OR an output edge. Data is fed into the node through
+the input edge, and sent on through the output edge if any.
 
 #+BEGIN_EXAMPLE
-Allowed ← Your allowed (implemented) features
-Available ← All features in Mu Ren Zhuang
-
-IF Allowed ≠ Available
-    IF Allowed ≠ ⍬
-        Randomly pick one of 
-               * 'Remove an imeplemented feature'
-               * 'Add a new feature'
-        
-    ELSE 
-        * 'Add a new feature'
-    END
-ELSE
-    * 'Remove an imeplemented feature'
-END
+      | <-- input edge
+   ------
+  | NODE |
+   ------
+      | <---- output edge
 #+END_EXAMPLE
 
-The description of each 'Remove an imeplemented feature' and 'Add a new feature'
-follows.
+There are three basic kinds of nodes.
 
-*** Remove an implemented feature
+*** Input node 
+An Input node is a node that feeds data into the program, either from STDIN
+or from a file. An example of such a node, is the INPUT node, which is always part of the 
+described system and can not be removed.
 
 #+BEGIN_EXAMPLE
-Allowed ← Your allowed (implemented) features
-Chosen  ← random one of Allowed
-Remove the Chosen feature from your implementation
-Remove all tests associated with Chosen feature
-Refactor
-Ensure 100% coverage
-Remove  Chosen from Allowed
+   -----
+  |INPUT|
+   -----
+     | <- input data goes to program
+     |    through this output edge
 #+END_EXAMPLE
 
-*** Add a new feature
+*** Modification node
+A modification node, is a node that intercepts data coming through the output edge of another 
+node and through it's input edge. The node will then modify the data according to some description
+and pass it on throught its output edge.
 
 #+BEGIN_EXAMPLE
-Allowed ← Your allowed (implemented) features
-Available ← All features in Mu Ren Zhuang
-Free ← All F ∊ Available ∧ not F ∊ Allowed
-Chosen ← random one of Free
-Implement Chosen (preferrably using TDD)
-Refactor
-Ensure 100% coverage
-Add Chosen to Allowed
+      | <-- input edge
+   ------
+  | NODE |
+   ------
+      | <---- output edge
 #+END_EXAMPLE
 
+Modification nodes are expressed in terms of 'Buffering' and a 'Transformation'.
+Buffering-N means that the modification node stores N data elements (input characters)
+and then applies the 'Transformation' on the stored data elements, and sends the data
+along the output edge.
 
-** Loop
+To give an understanding of the Buffer/Transformation mechanics, examples now follow
 
-If you feel finished - stop. 
-Otherwise do 'Adding or removing features'
+**** Buffer-0
 
-* Formalisation
+A mutator with Buffer-0 and Transformation { Increase } will for every 
+character seen, increase it with 1  (alphabetic characters move as 'a' -> 'z' -> 'a'). 
+Thus the input data "1a2b3" would pass through as "2b3c4" when passing through this mutator.
 
-Starting from the root 
+**** Buffer-1
 
-#+BEGIN_EXAMPLE
- print "hello world" to screen
-#+END_EXAMPLE
+A mutator with Buffer-1 and Transformation { Swap 2 1 }  will consume 2 characters at
+a time, and swap them. When it consumes the first character, it will Buffer it, maintaining
+it for the Transformation, then, it consumes the second one, and as the buffer is full, it
+performs the operation and sends the resulting data through the output edge, and simultaneously
+stores the last consumed character into the buffer. 
+Thus, the input data  "1a2b3" would pass through as "a12ab23b".
 
-with another notation 
+**** Buffer-2
 
-#+BEGIN_EXAMPLE
-   X ← "hello world"
-   ⍟ ← id
-   Y ← STDOUT   
-   X  ⍟ → Y 
-#+END_EXAMPLE
+A mutator with Buffer-2 will store the last 2 seen and then, when reading the third character,
+apply the transform on the stored data and the seen one. Assuming the Transformation is 
+{ Increase 1 3 } it will increase the first and current value, passing these two values through.
+The input "1a2b3" will then be passed as "23bc34c"
 
-In this notation, id means that the only applied function on X is the identity,
-meaning we pass it along unmodified. Additionally →  means that the 
-Left Hand Side (LHS) is sent to the Right Hand Side (RHS).
+*** Output node
 
-This notation can now support additional features, the notation
-to signify multiple choices and conditional execution are the
-brackets '[' and ']'. The following example denotes the syntax
-of supporting the features passing "hell world" to STDOUT and FIE, 
-as well as the reversed version.
+An output node, is a node that receives data and outputs it from the system, through STDOUT or
+by writing to a file on disk.
 
-#+BEGIN_EXAMPLE
-   X ← "hello world"
-   ⍟ ← [ id, reversal ]
-   Y ← [ STDOUT, FILE ]
-   X  ⍟ → Y 
-#+END_EXAMPLE
+Example of such a node, is the OUTPUT node, which is always part of the described system and 
+can not be removed. The OUTPUT node will feed the data from it's input edge to STDOUT.
 
-As there are two functions to be applied in ⍟ on X,
-this now signifies that there is a condition. This 
-is the program features - ⍟ is the Allowed feature
-set.
+** Looping
 
-Additionally, assume the data to be modified is not only "hello world",
-but also to be read from a file (XML), or from a socket! Also add the ability 
-to capitalize every second letter in the text.
+You may quit Mu Ren Zhuang at any moment, as there is no definite state
+of done. The system will continually add or remove features (changed requirements!)
+until you feel that you practice session is done.
 
-#+BEGIN_EXAMPLE
-   X ← [ FILE(XML), "hello world", SOCKET ]
-   ⍟ ← [ id, reversal, capitalize_every_second ]
-   Y ← [ STDOUT, FILE ]
-   X  ⍟ → Y 
-#+END_EXAMPLE
+Thus, a training session can be described with the following
 
-* As command line program (if you want to)
-
-This is good enough, but how would such a program look like from the command line?
-How do we specify which feature we to be executed? Switches and flag arguments.
-The program described in the above notation would have the following '--help' output.
-
-#+BEGIN_EXAMPLE
-$ program --help
-
-  usage: program [-b BASE] [-m MANIP] [-o OUTPUT]
-  
-  BASE has the following options 
-     i      - internal text "hello world"
-     f PATH - PATH to XML file with data inside <exercise/data> element
-     s PORT - socket listeningon port PORT receives text data
-  
-  MANIP has the following options
-     i  - do nothing
-     r  - reverse the data
-     c2 - capitalize every second letter in the data
-
-  OUTPUT has the following options
-     s      - STDOUT
-     f PATH - output to file at PATH
-
-#+END_EXAMPLE
-
-Of course, multiple switches may be used at the same time, the program described
-below can output "hello world", both to STDOUT and to a file at the same time,
-reversing the data and capitalizing every 2nd letter.
-
-#+BEGIN_EXAMPLE
-   X ← "hello world"
-   ⍟ ← [ reversal, capitalize_every_second ]
-   Y ← [ STDOUT, FILE ]
-   X  ⍟ → Y 
-#+END_EXAMPLE
-
-Output from this usage would be
-
-#+BEGIN_EXAMPLE
- dLrOw OlLeH
-#+END_EXAMPLE
-
-
-* Base features
-
-The features should preferrably be small and lightweight with little or no 
-dependency on external interfaces. They should not be of the 'project euler' 
-academic nature where you solve them with 'the right formula'.
-
-Here I just supply a small base set for this - with a short description of 
-what is to be expected once implemented, using the notation described in 'Formalisation'
-
-** ⍟
-
-To save typing and space, the combinations on ⍟ can be written in a more precise
-form using a  combination of a main component ∆ (i.e rev/cap/bin) with a ∇ modifier (whole/half/first half).
-
-
-*** main components
-
-| ∆ (main) | effect                                      | Example "hello world" |
-|----------+---------------------------------------------+-----------------------|
-| id       | identity                                    | hello world           |
-| rev      | reverse elements in X                       | dlrow olleh           |
-| cap      | capitalise elements in X                    | HELLO WORLD           |
-| bin      | binary encode elements in X (ASCII value)   | 1101000....           |
-| lower    | lowercase elements in X                     | hello world           |
-| dec      | decimal encode elements in X (ASCII code)   | 104101...             |
-| switch   | switch elements in X with neighbor to right | ehll oowlrd           |
-
-*** modifiers
-
-| ∇ (modifier) | effect                      |
-|--------------+-----------------------------|
-| whole        | whole of X                  |
-| 2            | every second element in X   |
-| HT           | first and last element in X |
-| 1H           | first half of X             |
-| 2H           | second half of X            |
-
-*** elements by combining  ∆ and ∇
-
-An X mutator can now be constructed by combining a main component and a modifier.
-Some quick examples
-
-- rev-whole 
-- switch-HT
-
-The resulting system description with these two implemented would then be
-
-#+BEGIN_EXAMPLE
-  X ← "hello world"
-  ⍟ ← [ rev-whole, switch-HT ]
-  Y ← STDOUT
-  X ⍟ → Y
-#+END_EXAMPLE
-
-Remember that both features may be turned on at the same time.
-This would result in "ldor wlloelh" (one of two combinations).
-
-** X
-
-Similarly, the base data source X can be described by combining main components ∆ with modifiers ∇,
-these will not be the same 'type' of modifiers and main components.
-
-*** main components
-
-| ∆ (main)     | Comment (base data source X is taken from)        |
-|--------------+---------------------------------------------------|
-| "string"     | fixed text "string"                               |
-| STDIN        | from STDIN                                        |
-| FILE(PATH)   | from a file at PATH, all lines read at once       |
-| SOCKET(PORT) | from reading data on TCP socket connection @ PORT |
-
-*** modifiers
-
-| ∇ (modifier) | Comment                                                   |
-|--------------+-----------------------------------------------------------|
-| id           | identity - no change                                      |
-| XML          | format is XML - X is embedded and needs to be extracted   |
-| JSON         | format is JSON - X is embedded and needds to be extracted |
-| binary       | data is binary encoded, and needs to be decoded           |
-
-
-  
-
-*** elements by combining ∆ and ∇
-
-An X base data source can be constructed by combining the ∆ and ∇, just as for ⍟, 
-some quick examples.
-
-- STDIN-id
-- FILE(./this)-binary
-
-The resulting system description with these two implemented would then be 
-
-#+BEGIN_EXAMPLE
-   X ← [ STDIN-id, FILE(./this)-binary ]
-   ⍟ ← id
-   Y ← STDOUT
-   X ⍟ → Y
-#+END_EXAMPLE
-
-This means that the two features of the program is to take X from STDIN just
-as it is, and the other source if a file at ./this which holds binary encoded data.
-
-
-** Y 
-
-Y is the output source, just like X and ⍟, it may be modified by a composition 
-based on a main ∆ and modifier ∇.
-
-*** main components
-
-The output may be pushed to STDOUT, to a FILE and a SOCKET, these are the proposed 
-destinations. 
-
-| ∆ (main)     | Comment                                            |
-|--------------+----------------------------------------------------|
-| STDOUT       | Print to screen                                    |
-| FILE(PATH)   | Write result to fine on disk at PATH               |
-| SOCKET(PORT) | Write result to established TCP connection on PORT |
-
-*** modifiers
-
-At the moment, I can not think of any good modifiers for Y as
-X is mutated as a result of ⍟ - this may be enough.
+1. implement the basic program STDIN → STDOUT
+2. ask mu ren zhuang for a change in requirements
+3. implement the change accordingly
+4. ensure 100 % test coverage
+5. refactor if needed
+6. go to 2
 
 
 
