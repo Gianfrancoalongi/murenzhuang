@@ -202,3 +202,14 @@ If we have a Buffer-2 mutator, Decrease 3 2 1 will return "baz" from the input s
 If we have a Buffer-2 mutator, Decrease 3 1 will return "bz" from the input sequence "abc".
 
 If we have a Buffer-2 mutator, Decrease 2 will return "a" from the input sequence "abc".
+*** Type [x_i]
+
+Type [x_i] - Returns an array which declares the type of the element the indexes target.
+1 means integer, 0 means alphabetic.
+
+**** Examples
+If we have a Buffer-2 mutator, Type 3 2 1 will return 010 from the input sequence "a2b".
+
+If we have a Buffer-2 mutator, Type 3 1 will return 00 from the input sequence "a2b".
+
+If we have a Buffer-2 mutator, Type 2 will return 1 from the input sequence "a2b".
