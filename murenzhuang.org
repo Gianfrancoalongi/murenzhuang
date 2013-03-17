@@ -161,19 +161,19 @@ in that order. This is then used by the Transformation function.
 
 *** Order [x_i]
 
-Order [x_i] - Orders the elements [x_i] according to the
-specified indices. For Buffer-N, N+1 indicates the current
-element, 1 is the first buffered element, etc.
+Order [x_i] - Returns an array of size |[x_i]|-1  where each element in the array is an 
+integer, indicating the ordering between two adjacent elements passed through the index array
+[x_i]. For every element in the returned array, 0 means they are equal, 2 means the right one
+is larger, 1 means the left one is larger, 3 means they are of different types (alphabetic/numeric) 
+and can not be compared.
 
 **** Examples
-If we have a Buffer-2 mutator, Order 3 2 1 will cause the
-sequence "abc" to be returned as "cba".
+If we have a Buffer-2 mutator, Order 3 2 1 will return 11 from the input sequence "abc".
 
-If we have a Buffer-2 mutator, Order 3 1 will cause the 
-sequence "abc" to be returned as "ca"
+If we have a Buffer-2 mutator, Order 3 1 will return 1 from the input sequence "abc".
 
-If we have a Buffer-2 mutator, Order 2 will cause the 
-sequence "abc" ro be returned as "b"
+If we have a Buffer-2 mutator, Order 2 will return 0 from the input sequence "abc".
+This is a special case where one element is equal to itself.
 
 *** Increase [x_i]
 
