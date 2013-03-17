@@ -177,20 +177,16 @@ This is a special case where one element is equal to itself.
 
 *** Increase [x_i]
 
-Increase [x_i] - increases the value of the elements according to
-the indices.  For Buffer-N, N+1 indicates the current element,
-1 is the first buffered element, etc. Increase is done differently
-depending on the natue of the data element. Number are increased modulo 10,
-and alphabetic characters (a-z) are increased to z, then loops back to a.
+Increase [x_i] - Returns an array of elements, each one increased by one. The elements are
+chosen by the element index array [x_i]. For numerical elements, the increase is modulo 10.
+For alphabetical elements, they are increased modulo (z+1), meaning all alphabetical characters
+are cycled through (a->z->a->z...). 
 
 **** Examples
-If we have a Buffer-2 mutator, Increase 3 2 1 will cause the
-sequence "abc" to be returned as "cba".
+If we have a Buffer-2 mutator, Increase 3 2 1 will return "dcb" from the input sequence "abc".
 
-If we have a Buffer-2 mutator, Increase 3 1 will cause the 
-sequence "abc" to be returned as "ca"
+If we have a Buffer-2 mutator, Increase 3 1 will return "db" from the input sequence "abc".
 
-If we have a Buffer-2 mutator, Increase 2 will cause the 
-sequence "abc" ro be returned as "b"
+If we have a Buffer-2 mutator, Increase 2 will return "c" from the input sequence "abc".
 
 
