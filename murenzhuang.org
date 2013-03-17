@@ -189,7 +189,6 @@ If we have a Buffer-2 mutator, Increase 3 1 will return "db" from the input sequ
 
 If we have a Buffer-2 mutator, Increase 2 will return "c" from the input sequence "abc".
 
-
 *** Decrease [x_i]
 
 Decrease [x_i] - Returns an array of elements, each one decreased by one. The elements are
