@@ -136,10 +136,28 @@ Thus, a training session can be described with the following
 ** Mutator types
 
 Mutators are defined by their Buffer-number and their Transformation.
-The buffer number (Buffer-N) affects the range in which the Transformation 
-can work. Which brings us to the types of available Transformations, and
-their effect.
+The general form of a mutator is
 
+#+BEGIN_EXAMPLE
+   Buffer-N 
+   TRANSFORMATION [x_i] EXTRA
+#+END_EXAMPLE
+
+Where N is an integer, in the range (0,...). TRANSFORMATION is the function which
+is applied on the array of elements indexed by the element index [x_i]. 
+EXTRA is an argument that is only defined for transformations that require them.
+
+The buffer number (Buffer-N) affects the possible values that can be part
+of the element indices [x_i] in the Transformations. 
+All Transformations can arrange the data elements sent through the output
+edge, by selecting the indices appropriately. [x_i] is the array of indices
+selecting the buffered and current values. For a Buffer-N mutator, the indices
+1...N select the buffered values in the order they where buffered, N+1 then indicates
+the current value. This is valid for all Transformations.
+
+Thus, for a Buffer-2 mutator, [x_i] 2 1 3 indicate that we construct an 
+array of the second buffered value, the first buffered value and the current element;
+in that order. This is then used by the Transformation function.
 
 *** Order [x_i]
 
@@ -156,3 +174,23 @@ sequence "abc" to be returned as "ca"
 
 If we have a Buffer-2 mutator, Order 2 will cause the 
 sequence "abc" ro be returned as "b"
+
+*** Increase [x_i]
+
+Increase [x_i] - increases the value of the elements according to
+the indices.  For Buffer-N, N+1 indicates the current element,
+1 is the first buffered element, etc. Increase is done differently
+depending on the natue of the data element. Number are increased modulo 10,
+and alphabetic characters (a-z) are increased to z, then loops back to a.
+
+**** Examples
+If we have a Buffer-2 mutator, Increase 3 2 1 will cause the
+sequence "abc" to be returned as "cba".
+
+If we have a Buffer-2 mutator, Increase 3 1 will cause the 
+sequence "abc" to be returned as "ca"
+
+If we have a Buffer-2 mutator, Increase 2 will cause the 
+sequence "abc" ro be returned as "b"
+
+
