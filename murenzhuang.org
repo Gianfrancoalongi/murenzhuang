@@ -190,3 +190,16 @@ If we have a Buffer-2 mutator, Increase 3 1 will return "db" from the input sequ
 If we have a Buffer-2 mutator, Increase 2 will return "c" from the input sequence "abc".
 
 
+*** Decrease [x_i]
+
+Decrease [x_i] - Returns an array of elements, each one decreased by one. The elements are
+chosen by the element index array [x_i]. For numerical elements, the decrease is modulo 10.
+For alphabetical elements, they are decreased modulo (z+1), meaning all alphabetical characters
+are cycled through (z->a->z->a...). 
+
+**** Examples
+If we have a Buffer-2 mutator, Decrease 3 2 1 will return "baz" from the input sequence "abc".
+
+If we have a Buffer-2 mutator, Decrease 3 1 will return "bz" from the input sequence "abc".
+
+If we have a Buffer-2 mutator, Decrease 2 will return "a" from the input sequence "abc".
