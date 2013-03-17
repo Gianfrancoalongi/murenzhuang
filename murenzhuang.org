@@ -225,3 +225,17 @@ If we have a Buffer-2 mutator, Copy 3 2 1 will return "cccbba" from the input se
 If we have a Buffer-2 mutator, Copy 3 1 will return "ccca" from the input sequence "abc".
 
 If we have a Buffer-2 mutator, Copy 2 will return "bb" from the input sequence "abc".
+*** Sum [x_i]
+
+Sum [x_i] - Returns a scalar which is the sum of the elements indexed by [x_i], the sum is subject
+to modulo. Adding integers will be modulo 10, adding alphabetic characters is modulo (z+1). If there
+are mixed types targeted by [x_i], a sum is computed for each group and returned. 
+
+**** Example
+If we have a Buffer-3 mutator, Sum 2 4 will return 3 from the input sequence "a1b2".
+
+If we have a Buffer-3 mutator, Sum 1 3 will return c from the input sequence "a1b2".
+
+If we have a Buffer-3 mutator, Sum 1 3 2 will return c1 from the input sequence "a1b2".
+
+If we have a Buffer-3 mutator, Sum 2 1 3 will return 1c from the input sequence "a1b2".
