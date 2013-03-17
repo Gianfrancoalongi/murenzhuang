@@ -133,7 +133,7 @@ Thus, a training session can be described with the following
 5. refactor if needed
 6. go to 2
 
-** Mutator types
+** Mutators
 
 Mutators are defined by their Buffer-number and their Transformation.
 The general form of a mutator is
@@ -159,6 +159,7 @@ Thus, for a Buffer-2 mutator, [x_i] 2 1 3 indicate that we construct an
 array of the second buffered value, the first buffered value and the current element;
 in that order. This is then used by the Transformation function.
 
+** Transformations
 *** Order [x_i]
 
 Order [x_i] - Returns an array of size |[x_i]|-1  where each element in the array is an 
