@@ -239,3 +239,15 @@ If we have a Buffer-3 mutator, Sum 1 3 will return c from the input sequence "a1
 If we have a Buffer-3 mutator, Sum 1 3 2 will return c1 from the input sequence "a1b2".
 
 If we have a Buffer-3 mutator, Sum 2 1 3 will return 1c from the input sequence "a1b2".
+*** Encode [x_i]
+
+Encode [x_i] - Returns an array where every targeted element changes domain, integer elements
+are encoded as alphabetic characters (based on corresponding index), alphabetic characters
+are encoded as integers - not modulo.
+
+**** Example
+If we have a Buffer-2 mutator, Encode 1 2 will return 1b from the input sequence "a2l".
+
+If we have a Buffer-2 mutator, Encode 3 will return 12 from the input sequence "a2l".
+
+If we have a Buffer-2 mutator, Encode 1 2 3 will return 1b12 from the input sequence "a2l".
