@@ -213,3 +213,14 @@ If we have a Buffer-2 mutator, Type 3 2 1 will return 010 from the input sequenc
 If we have a Buffer-2 mutator, Type 3 1 will return 00 from the input sequence "a2b".
 
 If we have a Buffer-2 mutator, Type 2 will return 1 from the input sequence "a2b".
+*** Copy [x_i]
+
+Copy [x_i] - Creates an array where each element indexed by x_i is replaced by |x_i| amount of copies of 
+itself. 
+
+**** Examples
+If we have a Buffer-2 mutator, Copy 3 2 1 will return "cccbba" from the input sequence "abc".
+
+If we have a Buffer-2 mutator, Copy 3 1 will return "ccca" from the input sequence "abc".
+
+If we have a Buffer-2 mutator, Copy 2 will return "bb" from the input sequence "abc".
