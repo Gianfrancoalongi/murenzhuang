@@ -39,6 +39,15 @@ From here, the Mu Ren Zhuang system will chose to give you a feature, or ask you
 to remove a feature. This is at random, and your training session should 
 hopefully never be the same.
 
+** Construction of problem system
+
+Starting with the most basic program INPUT → OUTPUT, the possible continuation
+in each step is one of the following
+
+1. Remove a node from the system (any node not being INPUT or OUTPUT)
+2. Add a random mutator node between two nodes (this will add a new path in the system)
+3. Add a new output node from either the input node or a mutator node
+
 ** Node composition through input and output edges   
 
 Mu Ren Zhuang will describe a system for you to implement, this is done using
@@ -251,3 +260,5 @@ If we have a Buffer-2 mutator, Encode 1 2 will return 1b from the input sequence
 If we have a Buffer-2 mutator, Encode 3 will return 12 from the input sequence "a2l".
 
 If we have a Buffer-2 mutator, Encode 1 2 3 will return 1b12 from the input sequence "a2l".
+
+
