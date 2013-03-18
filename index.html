@@ -1,0 +1,19 @@
+<!DOCTYPE html> 
+<html>
+  <head>    
+    <script language="javascript" type="text/javascript" src="./jquery-1.9.1.min.js"></script>
+    <script>
+      function make_graphviz_graph()
+      {
+          dot_code = "digraph gr{ INPUT -> OUTPUT; }";
+          options = {cht: "gv", chl: dot_code };
+          request = "https://chart.googleapis.com/chart?"+$.param(options);
+          $('#graph_img').attr('src',request);
+      }
+    </script>
+  </head>
+  <body> 
+    <img id="graph_img"/>
+    <script> make_graphviz_graph(); </script> 
+  </body>
+</html>
