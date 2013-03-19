@@ -111,6 +111,17 @@
            return "file_"+Math.floor((Math.random()*100)+1);
       }
 
+      function create_output_shape_dot_code()
+      {
+          var output="";
+          var length = files.length, element = null;
+          for(var i = 0; i < length; i++)
+          {
+               output+=files[i]+'[shape="note"];'
+          }
+          return output;
+      }
+
       function create_dot_code_from_paths()
       {          
           var length = paths.length, element = null;
@@ -134,9 +145,10 @@
       }
 
       function make_graphviz_graph()
-      {              
+      {                        
+          output_shapes = create_output_shape_dot_code();
           path_dot_code = create_dot_code_from_paths();
-          dot_code = "digraph gr{ " + path_dot_code + " }";
+          dot_code = 'digraph gr{ ' + output_shapes + path_dot_code + ' }';
           options = {cht: "gv", chl: dot_code };
           request = "https://chart.googleapis.com/chart?"+$.param(options);
           $('#graph_img').attr('src',request);
