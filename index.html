@@ -40,6 +40,25 @@
            paths.push(chosen.splice(point,0,mutator));
       }
 
+      function add_output_node_randomly_from_input_node_or_mutator_node()
+      {
+           if (Math.round(Math.random()) == 0)
+           {
+               add_output_node_from_input();
+           }else
+           {
+               add_output_node_from_random_mutator_node();
+           }
+      }
+ 
+      function add_output_node_from_random_mutator_node()
+      {
+           var output_file=create_new_output_file();
+           var rand_i=Math.floor(Math.random()*mutators.length);
+           var chosen=mutators[(rand_i > 0 ? rand_i -1 : rand_i)];
+           paths.push([chosen,output_file]);
+      }
+
       function add_node_from(source,new_node)
       {
            paths.push([source,new_node]);
@@ -132,6 +151,8 @@
            add_output_node_from_input();
 	   add_mutator_randomly_on_edge();
 	   add_mutator_randomly_on_edge();
+	   add_output_node_randomly_from_input_node_or_mutator_node();
+	   add_output_node_randomly_from_input_node_or_mutator_node();
            make_graphviz_graph();
     </script> 
   </body>
