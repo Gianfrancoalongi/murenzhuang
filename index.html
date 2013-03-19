@@ -8,17 +8,19 @@
 
       var paths;
       var files;
+      var mutators;
 
-      function initialize_paths_and_files()
+      function initialize()
       {
           files=[];
           paths=[];
+          mutators=[];
           paths.push([STDIN,STDOUT])
       }
 
       function add_mutator_from_input()
       { 
-           var mutator="mutator_"+Math.floor((Math.random()*100)+1);
+           var mutator=create_new_mutator();
            add_node_between(STDIN,mutator,STDOUT);
       }
   
@@ -38,6 +40,27 @@
            paths.push([source,new_node,end]);
       }
 
+      function create_new_mutator()
+      {
+           var name=random_mutator_name();
+           while( mutator_name_is_used(name) )
+           {
+               name=random_mutator_name();
+           }
+           mutators.push(name);
+           return name;           
+      }
+
+      function mutator_name_is_used(name)
+      {
+           return $.inArray(name, mutators) != -1
+      }
+
+      function random_mutator_name()
+      {
+           return "mutator_"+Math.floor((Math.random()*100)+1);
+      }
+
       function create_new_output_file()
       {
            var file_name=random_file_name();
@@ -47,7 +70,7 @@
            }
            files.push(file_name);
            return file_name;
-      }
+      }      
 
       function file_name_is_used(file_name)
       {
@@ -94,7 +117,7 @@
   <body> 
     <img id="graph_img"/>
     <script> 
-           initialize_paths_and_files();
+           initialize();
            add_mutator_from_input();
            add_output_node_from_input();
            make_graphviz_graph();
