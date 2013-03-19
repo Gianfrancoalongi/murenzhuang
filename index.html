@@ -5,10 +5,13 @@
     <script>
       var STDIN="STDIN";
       var STDOUT="STDOUT";
-      var paths;
 
-      function initialize_paths()
+      var paths;
+      var files;
+
+      function initialize_paths_and_files()
       {
+          files=[];
           paths=[];
           paths.push([STDIN,STDOUT])
       }
@@ -18,10 +21,42 @@
            var mutator="mutator_"+Math.floor((Math.random()*100)+1);
            add_node_between(STDIN,mutator,STDOUT);
       }
+  
+      function add_output_node_from_input()
+      {
+           var output_file=create_new_output_file();
+           add_node_from(STDIN,output_file);
+      }
+
+      function add_node_from(source,new_node)
+      {
+           paths.push([source,new_node]);
+      }
  
       function add_node_between(source,new_node,end)
       {
            paths.push([source,new_node,end]);
+      }
+
+      function create_new_output_file()
+      {
+           var file_name=random_file_name();
+           while( file_name_is_used(file_name) )
+           {
+               file_name=random_file_name();
+           }
+           files.push(file_name);
+           return file_name;
+      }
+
+      function file_name_is_used(file_name)
+      {
+           return $.inArray(file_name, files) != -1
+      }
+
+      function random_file_name()
+      {
+           return "file_"+Math.floor((Math.random()*100)+1);
       }
 
       function create_dot_code_from_paths()
@@ -59,8 +94,9 @@
   <body> 
     <img id="graph_img"/>
     <script> 
-           initialize_paths();
+           initialize_paths_and_files();
            add_mutator_from_input();
+           add_output_node_from_input();
            make_graphviz_graph();
     </script> 
   </body>
