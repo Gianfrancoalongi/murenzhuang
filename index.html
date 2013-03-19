@@ -3,9 +3,42 @@
   <head>    
     <script language="javascript" type="text/javascript" src="./jquery-1.9.1.min.js"></script>
     <script>
-      function make_graphviz_graph()
+      var paths;
+
+      function initialize_paths()
       {
-          dot_code = "digraph gr{ INPUT -> OUTPUT; }";
+          paths=[];
+          paths.push(["INPUT","OUTPUT"]);
+          paths.push(["INPUT","f","OUTPUT"]);
+      }
+
+      function create_dot_code_from_paths()
+      {          
+          var length = paths.length, element = null;
+          var dot_paths=[];
+          for (var i = 0; i < length; i++)
+          {
+              element = paths[i];
+              var parts = element.length, subpart = null;
+	      for (var j = 1; j < parts; j++)
+              {
+                  console.log(element[j]);
+                  dot_paths.push(element[j-1]+"->"+element[j]);
+              }
+          }
+          var dot_code="";
+          var length = dot_paths.length, element = null;
+          for (var i = 0; i < length; i++)
+          {
+              dot_code+=dot_paths[i]+";";
+          }
+          return dot_code;
+      }
+
+      function make_graphviz_graph()
+      {              
+          path_dot_code = create_dot_code_from_paths();
+          dot_code = "digraph gr{ " + path_dot_code + " }";
           options = {cht: "gv", chl: dot_code };
           request = "https://chart.googleapis.com/chart?"+$.param(options);
           $('#graph_img').attr('src',request);
@@ -14,6 +47,9 @@
   </head>
   <body> 
     <img id="graph_img"/>
-    <script> make_graphviz_graph(); </script> 
+    <script> 
+           initialize_paths();
+           make_graphviz_graph();
+    </script> 
   </body>
 </html>
