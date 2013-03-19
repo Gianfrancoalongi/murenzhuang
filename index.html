@@ -3,13 +3,25 @@
   <head>    
     <script language="javascript" type="text/javascript" src="./jquery-1.9.1.min.js"></script>
     <script>
+      var STDIN="STDIN";
+      var STDOUT="STDOUT";
       var paths;
 
       function initialize_paths()
       {
           paths=[];
-          paths.push(["INPUT","OUTPUT"]);
-          paths.push(["INPUT","f","OUTPUT"]);
+          paths.push([STDIN,STDOUT])
+      }
+
+      function add_mutator_from_input()
+      { 
+           var mutator="mutator_"+Math.floor((Math.random()*100)+1);
+           add_node_between(STDIN,mutator,STDOUT);
+      }
+ 
+      function add_node_between(source,new_node,end)
+      {
+           paths.push([source,new_node,end]);
       }
 
       function create_dot_code_from_paths()
@@ -22,7 +34,6 @@
               var parts = element.length, subpart = null;
 	      for (var j = 1; j < parts; j++)
               {
-                  console.log(element[j]);
                   dot_paths.push(element[j-1]+"->"+element[j]);
               }
           }
@@ -49,6 +60,7 @@
     <img id="graph_img"/>
     <script> 
            initialize_paths();
+           add_mutator_from_input();
            make_graphviz_graph();
     </script> 
   </body>
