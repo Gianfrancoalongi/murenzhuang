@@ -122,6 +122,11 @@ function create_output_shape_dot_code()
     return output;
 }
 
+function create_edge_shape_dot_code()
+{
+    return (STDIN+'[shape="house"];'+STDOUT+'[shape="invhouse"];')
+}
+
 function create_dot_code_from_paths()
 {          
     var length = paths.length, element = null;
@@ -143,10 +148,11 @@ function create_dot_code_from_paths()
 
 function make_graphviz_graph()
 {                        
-    output_shapes = create_output_shape_dot_code();
-    path_dot_code = create_dot_code_from_paths();
-    dot_code = 'digraph gr{ ' + output_shapes + path_dot_code + ' }';
-    options = {cht: "gv", chl: dot_code };
-    request = "https://chart.googleapis.com/chart?"+$.param(options);
+    var input_output = create_edge_shape_dot_code();
+    var output_shapes = create_output_shape_dot_code();
+    var path_dot_code = create_dot_code_from_paths();
+    var dot_code = 'digraph gr{ ' + input_output + output_shapes + path_dot_code + ' }';
+    var options = {cht: "gv", chl: dot_code };
+    var request = "https://chart.googleapis.com/chart?"+$.param(options);
     $('#graph_img').attr('src',request);
 }
