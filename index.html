@@ -5,12 +5,16 @@
     <script language="javascript" type="text/javascript" src="./engine.js"></script>
   </head>
   <body> 
-    <input type="button" onclick="add_mutator_randomly_on_edge()" value="Add mutator randomly">
-    <input type="button" onclick="add_mutator_from_input()" value="Add mutator from input">
-    <input type="button" onclick="add_output_node_from_input()" value="Add output node from input">
-    <input type="button" onclick="add_output_node_randomly_from_input_node_or_mutator_node()" value="Add output node randomly">
-    <input type="button" onclick="make_graphviz_graph()" value="Redraw">
-    <img id="graph_img"/>    
+    <div>
+      <input type="button" onclick="add_mutator_randomly_on_edge()" value="Add mutator randomly">
+      <input type="button" onclick="add_mutator_from_input()" value="Add mutator from input">
+      <input type="button" onclick="add_output_node_from_input()" value="Add output node from input">
+      <input type="button" onclick="add_output_node_randomly_from_input_node_or_mutator_node()" value="Add output node randomly">
+      <input type="button" onclick="make_graphviz_graph()" value="Redraw">
+    </div>
+    <div>
+      <img id="graph_img"/>    
+    </div>
     <script> 
            initialize();
            make_graphviz_graph();
