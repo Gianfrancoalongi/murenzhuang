@@ -47,9 +47,14 @@ function add_output_node_randomly_from_input_node_or_mutator_node()
 function add_output_node_from_random_mutator_node()
 {
     var output_file=create_new_output_file();
-    var rand_i=Math.floor(Math.random()*mutators.length);
-    var chosen=mutators[(rand_i > 0 ? rand_i -1 : rand_i)];
+    var chosen=choose_random_mutator();
     paths.push([chosen,output_file]);
+}
+
+function choose_random_mutator()
+{
+    var rand_i=Math.floor(Math.random()*mutators.length);
+    return mutators[(rand_i > 0 ? rand_i -1 : rand_i)];
 }
 
 function add_node_from(source,new_node)
