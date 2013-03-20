@@ -5,15 +5,15 @@
     <script language="javascript" type="text/javascript" src="./engine.js"></script>
   </head>
   <body> 
-    <img id="graph_img"/>
+    <input type="button" onclick="add_mutator_randomly_on_edge()" value="Add mutator">
+    <input type="button" onclick="make_graphviz_graph()" value="Redraw">
+    <img id="graph_img"/>    
     <script> 
            initialize();
-           add_mutator_from_input();
-           add_output_node_from_input();
+           // add_mutator_from_input();
+           // add_output_node_from_input();
 	   add_mutator_randomly_on_edge();
-	   add_mutator_randomly_on_edge();
-	   add_output_node_randomly_from_input_node_or_mutator_node();
-	   add_output_node_randomly_from_input_node_or_mutator_node();
+	   // add_output_node_randomly_from_input_node_or_mutator_node();
            make_graphviz_graph();
     </script> 
   </body>

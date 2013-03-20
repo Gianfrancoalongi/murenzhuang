@@ -31,12 +31,20 @@ function add_mutator_randomly_on_edge()
     var chosen=randomly_choose_existing_path();
     var possible_points=chosen.length-1;           
     var point=Math.floor(Math.random()*possible_points+1);
-    paths.push(chosen.splice(point,0,mutator));
+    
+    var new_edge=[];
+    for(var i = 0; i < chosen.length; i++)
+    {
+	new_edge[i] = chosen[i];
+    }
+    new_edge.splice(point,0,mutator);
+    new_edge.splice(1,point-1),
+    paths.push(new_edge);
 }
 
 function randomly_choose_existing_path()
 {
-    var rand_i=Math.floor(Math.random()*paths.length);
+    var rand_i=Math.round(Math.random()*(paths.length-1));
     return paths[(rand_i > 0 ? rand_i -1 : rand_i)];
 }
 
@@ -151,7 +159,7 @@ function make_graphviz_graph()
     var input_output = create_edge_shape_dot_code();
     var output_shapes = create_output_shape_dot_code();
     var path_dot_code = create_dot_code_from_paths();
-    var dot_code = 'digraph gr{ ' + input_output + output_shapes + path_dot_code + ' }';
+    var dot_code = 'strict digraph gr{ ' + input_output + output_shapes + path_dot_code + ' }';
     var options = {cht: "gv", chl: dot_code };
     var request = "https://chart.googleapis.com/chart?"+$.param(options);
     $('#graph_img').attr('src',request);
