@@ -28,11 +28,16 @@ function add_output_node_from_input()
 function add_mutator_randomly_on_edge()
 {
     var mutator=create_new_mutator();
-    var rand_i=Math.floor(Math.random()*paths.length);
-    var chosen=paths[(rand_i > 0 ? rand_i -1 : rand_i)];
+    var chosen=randomly_choose_existing_path();
     var possible_points=chosen.length-1;           
     var point=Math.floor(Math.random()*possible_points+1);
     paths.push(chosen.splice(point,0,mutator));
+}
+
+function randomly_choose_existing_path()
+{
+    var rand_i=Math.floor(Math.random()*paths.length);
+    return paths[(rand_i > 0 ? rand_i -1 : rand_i)];
 }
 
 function add_output_node_randomly_from_input_node_or_mutator_node()
