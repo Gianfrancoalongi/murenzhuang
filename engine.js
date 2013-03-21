@@ -31,15 +31,19 @@ function add_mutator_randomly_on_edge()
     var chosen=randomly_choose_existing_path();
     var possible_points=chosen.length-1;           
     var point=Math.floor(Math.random()*possible_points+1);
-    
-    var new_edge=[];
-    for(var i = 0; i < chosen.length; i++)
-    {
-	new_edge[i] = chosen[i];
-    }
+    var new_edge=copy_edge(chosen);
     new_edge.splice(point,0,mutator);
     new_edge.splice(1,point-1),
     paths.push(new_edge);
+}
+
+function copy_edge(chosen)
+{
+    var new_edge=[];
+    for(var i = 0; i < chosen.length; i++) {
+	new_edge[i] = chosen[i];
+    }
+    return new_edge;
 }
 
 function randomly_choose_existing_path()
