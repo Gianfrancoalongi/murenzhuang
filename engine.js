@@ -37,6 +37,63 @@ function add_mutator_randomly_on_edge()
     paths.push(new_edge);
 }
 
+function remove_node_randomly()
+{
+    if (Math.round(Math.random()) == 0 ) {
+	remove_random_output_node();
+    }else{
+	remove_random_mutator_node();
+    }
+}
+
+function remove_random_mutator_node()
+{
+    var chosen=pick_random_mutator_node();
+    remove_chosen_node_from_all_paths(chosen);
+    remove_chosen_node_from_mutators(chosen);
+}
+
+function pick_random_mutator_node()
+{
+    var index=Math.round((mutators.length-1)*Math.random());
+    return mutators[index];
+}
+
+function remove_chosen_node_from_all_paths(chosen) 
+{ 
+    for (var i=0; i < paths.length; i++) {
+	var index=paths[i].indexOf(chosen);	
+	if ( index != -1 ) {
+	    paths[i].splice(index,1);
+	}
+    }
+}
+
+function remove_chosen_node_from_mutators(chosen)
+{
+    var index=mutators.indexOf(chosen);
+    mutators.splice(index,1);
+}
+
+function remove_random_output_node() 
+{ 
+    var chosen=pick_random_output_node();
+    remove_chosen_node_from_all_paths(chosen);
+    remove_chosen_from_files(chosen);
+}
+
+function pick_random_output_node()
+{
+    var index=Math.round((files.length-1)*Math.random());
+    return files[index];
+}
+
+function remove_chosen_from_files(chosen)
+{
+    var index=files.indexOf(chosen);
+    files.splice(index,1);
+}
+
 function copy_edge(chosen)
 {
     var new_edge=[];
@@ -159,7 +216,13 @@ function create_dot_code_from_paths()
 }
 
 function make_graphviz_graph()
-{                        
+{
+
+    console.log('----------------------------------------------------');
+    console.log(paths);
+    console.log(files);
+    console.log(mutators);
+
     var input_output = create_edge_shape_dot_code();
     var output_shapes = create_output_shape_dot_code();
     var path_dot_code = create_dot_code_from_paths();
