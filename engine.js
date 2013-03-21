@@ -48,8 +48,8 @@ function copy_edge(chosen)
 
 function randomly_choose_existing_path()
 {
-    var rand_i=Math.round(Math.random()*(paths.length-1));
-    return paths[(rand_i > 0 ? rand_i -1 : rand_i)];
+    var rand_i=Math.round(Math.random()*(paths.length-1)); 
+    return paths[rand_i];
 }
 
 function add_output_node_randomly_from_input_node_or_mutator_node()
