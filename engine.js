@@ -28,11 +28,24 @@ function add_output_node_from_input()
 function add_mutator_randomly_on_edge()
 {
     var mutator=create_new_mutator();
-    var rand_i=Math.floor(Math.random()*paths.length);
-    var chosen=paths[(rand_i > 0 ? rand_i -1 : rand_i)];
+    var chosen=randomly_choose_existing_path();
     var possible_points=chosen.length-1;           
     var point=Math.floor(Math.random()*possible_points+1);
-    paths.push(chosen.splice(point,0,mutator));
+    
+    var new_edge=[];
+    for(var i = 0; i < chosen.length; i++)
+    {
+	new_edge[i] = chosen[i];
+    }
+    new_edge.splice(point,0,mutator);
+    new_edge.splice(1,point-1),
+    paths.push(new_edge);
+}
+
+function randomly_choose_existing_path()
+{
+    var rand_i=Math.round(Math.random()*(paths.length-1));
+    return paths[(rand_i > 0 ? rand_i -1 : rand_i)];
 }
 
 function add_output_node_randomly_from_input_node_or_mutator_node()
@@ -117,6 +130,11 @@ function create_output_shape_dot_code()
     return output;
 }
 
+function create_edge_shape_dot_code()
+{
+    return (STDIN+'[shape="house"];'+STDOUT+'[shape="invhouse"];')
+}
+
 function create_dot_code_from_paths()
 {          
     var length = paths.length, element = null;
@@ -138,10 +156,11 @@ function create_dot_code_from_paths()
 
 function make_graphviz_graph()
 {                        
-    output_shapes = create_output_shape_dot_code();
-    path_dot_code = create_dot_code_from_paths();
-    dot_code = 'digraph gr{ ' + output_shapes + path_dot_code + ' }';
-    options = {cht: "gv", chl: dot_code };
-    request = "https://chart.googleapis.com/chart?"+$.param(options);
+    var input_output = create_edge_shape_dot_code();
+    var output_shapes = create_output_shape_dot_code();
+    var path_dot_code = create_dot_code_from_paths();
+    var dot_code = 'strict digraph gr{ ' + input_output + output_shapes + path_dot_code + ' }';
+    var options = {cht: "gv", chl: dot_code };
+    var request = "https://chart.googleapis.com/chart?"+$.param(options);
     $('#graph_img').attr('src',request);
 }
