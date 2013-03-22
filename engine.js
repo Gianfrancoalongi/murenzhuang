@@ -48,8 +48,10 @@ function add_output_node_randomly_from_input_node_or_mutator_node()
 function remove_node_randomly()
 {
     if (Math.round(Math.random()) == 0 ) {
+	console.log('Removing file');
 	remove_random_output_node();
     }else{
+	console.log('Removing node');
 	remove_random_mutator_node();
     }
 }
@@ -69,26 +71,27 @@ function pick_random_mutator_node()
 
 function remove_path_with_output_node(chosen) 
 {  
-    for (var i=0; i < paths.length; i++) {
-	var index=paths[i].indexOf(chosen);
+    var len=paths.length;
+    while(len--) {
+	var index=paths[len].indexOf(chosen);
 	if ( index != -1 ) {
-	    paths.splice(i,1);
+	    paths.splice(len,1);
 	}
     }
 }
 
 function remove_chosen_node_from_all_paths(chosen) 
 { 
-    for (var i=0; i < paths.length; i++) {
-	var index=paths[i].indexOf(chosen);	
+    var len=paths.length;
+    while(len--) {
+	var i=len;
+	var index=paths[i].indexOf(chosen);
 	if ( index != -1 ) {
 	    paths[i].splice(index,1);
-	    if (paths[i].length == 1) {
-		paths.splice(i+1,1);
+	    if ( (paths[i].length == 1) || 
+		((paths[i][0] == STDIN) && (paths[i][1] == STDOUT) && (paths[i].length == 2)) ) {
+		paths.splice(i,1);
 	    }
-	    if (paths[i][0] == STDIN && paths[i][1] == STDOUT && paths[i].length == 2) {
-		paths.splice(i+1,1);
-	    }		    
 	}
     }
 }
@@ -245,11 +248,9 @@ function create_dot_code_from_paths()
 
 function make_graphviz_graph()
 {
-
-    console.log('----------------------------------------------------');
-    console.log(paths);
-    console.log(files);
-    console.log(mutators);
+    console.log(JSON.stringify(paths));
+    console.log(JSON.stringify(files));
+    console.log(JSON.stringify(mutators));
 
     var input_output = create_edge_shape_dot_code();
     var output_shapes = create_output_shape_dot_code();
