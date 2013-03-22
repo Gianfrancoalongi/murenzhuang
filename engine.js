@@ -123,18 +123,19 @@ function randomly_choose_existing_path()
 function add_output_node_from_random_mutator_node()
 {
     var chosen=choose_random_mutator();
-    var paths_containing_mutator=[];
-    for(var i=0; i< paths.length; i++) {
+    var path_indices=[];
+    var len=paths.length;
+    for(var i=0; i< len; i++) {
 	var index=paths[i].indexOf(chosen);
 	if ( index != -1 ) {
-	    paths_containing_mutator.push(i);
+	    path_indices.push(i);
 	}
     }
-    var path_index=Math.round(Math.random()*paths_containing_mutator.length-1);
+    var path_index=path_indices[ Math.round(Math.random()*(path_indices.length-1)) ];
     var copy=copy_edge(paths[path_index]);
     var output_file=create_new_output_file(); 
-    var mutator_index=paths[path_index].indexOf(chosen);
-    copy.splice(mutator_index,0,output_file);
+    var mutator_index=copy.indexOf(chosen);
+    copy.splice(mutator_index+1,0,output_file);
     paths.push(copy);
 }
 
