@@ -1,5 +1,8 @@
 var STDIN="STDIN";
 var STDOUT="STDOUT";
+var ADD_MUTATOR='add_mutator';
+var ADD_OUTPUT='add_output';
+var REMOVE_NODE='remove_node';
 
 var paths;
 var files;
@@ -15,30 +18,26 @@ function initialize()
 
 function next_step()
 {
-    var ADD_MUT='add_mutator';
-    var ADD_OUT='add_output';
-    var REMOVE='remove_node';
-    var type=choose_one_randomly([ADD_MUT,ADD_MUT,ADD_OUT,REMOVE]);
-    console.log(type);
-    switch(type) {
-    case ADD_MUT:
+    var actions = [ADD_MUTATOR,ADD_OUTPUT,REMOVE_NODE];
+    var chosen_action = choose_one_randomly(actions);
+    next_step_based_on_action(chosen_action);
+}
+
+function next_step_based_on_action(action) 
+{
+    switch(action) {
+    case ADD_MUTATOR:
 	add_mutator_randomly_on_edge();
 	break;
-    case ADD_OUT:
+    case ADD_OUTPUT:
 	add_output_node_randomly_from_input_node_or_mutator_node();
 	break;
-    case REMOVE:
+    case REMOVE_NODE:
 	remove_node_randomly();
 	break;
     }
 }
 
-function add_mutator_from_input()
-{ 
-    var mutator=create_new_mutator();
-    add_node_between(STDIN,mutator,STDOUT);
-}
-  
 function add_output_node_from_input()
 {
     var output_file=create_new_output_file();
@@ -47,10 +46,10 @@ function add_output_node_from_input()
 
 function add_mutator_randomly_on_edge()
 {
-    var mutator=create_new_mutator();
-    var chosen=randomly_choose_existing_path();
-    var point=Math.floor(Math.random()*(chosen.length-1))+1;
-    var new_edge=copy_edge(chosen);
+    var mutator = create_new_mutator();
+    var chosen = randomly_choose_existing_path();
+    var point = Math.floor(Math.random()*(chosen.length-1))+1;
+    var new_edge = copy_edge(chosen);
     new_edge.splice(point,0,mutator);
     paths.push(new_edge);
 }
@@ -317,10 +316,6 @@ function create_dot_code_from_paths()
 
 function make_graphviz_graph()
 {
-    console.log(JSON.stringify(paths));
-    console.log(JSON.stringify(files));
-    console.log(JSON.stringify(mutators));
-
     var input_output = create_edge_shape_dot_code();
     var output_shapes = create_output_shape_dot_code();
     var path_dot_code = create_dot_code_from_paths();
