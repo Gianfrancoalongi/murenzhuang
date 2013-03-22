@@ -136,6 +136,7 @@ function add_output_node_from_random_mutator_node()
     var output_file=create_new_output_file(); 
     var mutator_index=copy.indexOf(chosen);
     copy.splice(mutator_index+1,0,output_file);
+    copy.splice(mutator_index+2,copy.length-mutator_index-2);
     paths.push(copy);
 }
 
