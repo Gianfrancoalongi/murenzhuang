@@ -30,7 +30,7 @@ function add_mutator_randomly_on_edge()
 {
     var mutator=create_new_mutator();
     var chosen=randomly_choose_existing_path();
-    var point=Math.round(Math.random()*chosen.length);
+    var point=Math.floor(Math.random()*(chosen.length-1))+1;
     var new_edge=copy_edge(chosen);
     new_edge.splice(point,0,mutator);
     paths.push(new_edge);
@@ -122,9 +122,20 @@ function randomly_choose_existing_path()
  
 function add_output_node_from_random_mutator_node()
 {
-    var output_file=create_new_output_file();
     var chosen=choose_random_mutator();
-    paths.push([chosen,output_file]);
+    var paths_containing_mutator=[];
+    for(var i=0; i< paths.length; i++) {
+	var index=paths[i].indexOf(chosen);
+	if ( index != -1 ) {
+	    paths_containing_mutator.push(i);
+	}
+    }
+    var path_index=Math.round(Math.random()*paths_containing_mutator.length-1);
+    var copy=copy_edge(paths[path_index]);
+    var output_file=create_new_output_file(); 
+    var mutator_index=paths[path_index].indexOf(chosen);
+    copy.splice(mutator_index,0,output_file);
+    paths.push(copy);
 }
 
 function choose_random_mutator()
