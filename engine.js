@@ -13,6 +13,7 @@ function initialize()
     paths.push([STDIN,STDOUT]);
 }
 
+
 function add_mutator_from_input()
 { 
     var mutator=create_new_mutator();
@@ -35,6 +36,15 @@ function add_mutator_randomly_on_edge()
     new_edge.splice(point,0,mutator);
     new_edge.splice(1,point-1),
     paths.push(new_edge);
+}
+
+function add_output_node_randomly_from_input_node_or_mutator_node()
+{
+    if (Math.round(Math.random()) == 0) {
+	add_output_node_from_input();
+    }else{
+	add_output_node_from_random_mutator_node();
+    }
 }
 
 function remove_node_randomly()
@@ -65,6 +75,9 @@ function remove_chosen_node_from_all_paths(chosen)
 	var index=paths[i].indexOf(chosen);	
 	if ( index != -1 ) {
 	    paths[i].splice(index,1);
+	    if (paths[i].length == 1) {
+		paths.splice(i,1);
+	    }
 	}
     }
 }
@@ -107,15 +120,6 @@ function randomly_choose_existing_path()
 {
     var rand_i=Math.round(Math.random()*(paths.length-1)); 
     return paths[rand_i];
-}
-
-function add_output_node_randomly_from_input_node_or_mutator_node()
-{
-    if (Math.round(Math.random()) == 0) {
-	add_output_node_from_input();
-    }else{
-	add_output_node_from_random_mutator_node();
-    }
 }
  
 function add_output_node_from_random_mutator_node()
