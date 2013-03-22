@@ -47,13 +47,46 @@ function add_output_node_randomly_from_input_node_or_mutator_node()
 
 function remove_node_randomly()
 {
-    if (Math.round(Math.random()) == 0 ) {
-	console.log('Removing file');
-	remove_random_output_node();
-    }else{
-	console.log('Removing node');
-	remove_random_mutator_node();
+    var possibles=determine_possible_to_remove();
+    if (possibles.length > 0) {
+	var chosen=choose_one_randomly(possibles);
+	if ( chosen == 'output' ) {
+	    console.log('Removing file');
+	    remove_random_output_node();
+	}else{
+	    console.log('Removing node');
+	    remove_random_mutator_node();
+	}
     }
+}
+
+function choose_one_randomly(possibles) 
+{
+    var max=possibles.length - 1;
+    var index=Math.round(Math.random()*max);
+    return possibles[index];
+}
+
+function determine_possible_to_remove()
+{
+    var possibles=[];
+    if (there_are_any_output_nodes()) {
+	possibles.push('output');
+    }
+    if (there_are_any_mutator_nodes()) {
+	possibles.push('mutator');
+    }
+    return possibles;
+}
+
+function there_are_any_output_nodes() 
+{
+    return (files.length > 0);
+}
+
+function there_are_any_mutator_nodes()
+{
+    return (mutators.length > 0);
 }
 
 function remove_random_mutator_node()
