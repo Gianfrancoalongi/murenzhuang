@@ -25,6 +25,7 @@ function next_step()
 
 function next_step_based_on_action(action) 
 {
+    console.log(action);
     switch(action) {
     case ADD_MUTATOR:
 	add_mutator_randomly_on_edge();
@@ -200,8 +201,7 @@ function copy_edge(chosen)
 
 function randomly_choose_existing_path()
 {
-    var rand_i=Math.round(Math.random()*(paths.length-1)); 
-    return paths[rand_i];
+    return choose_one_randomly(paths);
 }
  
 function add_output_node_from_random_mutator_node()
@@ -226,8 +226,7 @@ function add_output_node_from_random_mutator_node()
 
 function choose_random_mutator()
 {
-    var rand_i=Math.floor(Math.random()*mutators.length);
-    return mutators[(rand_i > 0 ? rand_i -1 : rand_i)];
+    return choose_one_randomly(mutators);
 }
 
 function add_node_from(source,new_node)
@@ -282,12 +281,7 @@ function random_file_name()
 
 function create_output_shape_dot_code()
 {
-    var output="";
-    var length = files.length, element = null;
-    for(var i = 0; i < length; i++) {
-	output+=files[i]+'[shape="note"];';
-    }
-    return output;
+    return files.join('[shape="note"];')+'[shape="note"];';
 }
 
 function create_edge_shape_dot_code()
@@ -298,20 +292,15 @@ function create_edge_shape_dot_code()
 function create_dot_code_from_paths()
 {          
     var length = paths.length, element = null;
-    var dot_paths=[];
+    var dot_paths = [];
     for (var i = 0; i < length; i++) {
 	element = paths[i];
-	var parts = element.length, subpart = null;
+	var parts = element.length;
 	for (var j = 1; j < parts; j++) {
 	    dot_paths.push(element[j-1]+"->"+element[j]);
 	}
     }
-    var dot_code="";
-    var length = dot_paths.length, element = null;
-    for (var i = 0; i < length; i++) {
-	dot_code+=dot_paths[i]+";";
-    }
-    return dot_code;
+    return dot_paths.join(";");
 }
 
 function make_graphviz_graph()
