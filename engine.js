@@ -67,6 +67,16 @@ function pick_random_mutator_node()
     return mutators[index];
 }
 
+function remove_path_with_output_node(chosen) 
+{  
+    for (var i=0; i < paths.length; i++) {
+	var index=paths[i].indexOf(chosen);
+	if ( index != -1 ) {
+	    paths.splice(i,1);
+	}
+    }
+}
+
 function remove_chosen_node_from_all_paths(chosen) 
 { 
     for (var i=0; i < paths.length; i++) {
@@ -74,10 +84,10 @@ function remove_chosen_node_from_all_paths(chosen)
 	if ( index != -1 ) {
 	    paths[i].splice(index,1);
 	    if (paths[i].length == 1) {
-		paths.splice(i,1);
+		paths.splice(i+1,1);
 	    }
 	    if (paths[i][0] == STDIN && paths[i][1] == STDOUT && paths[i].length == 2) {
-		paths.splice(i,1);
+		paths.splice(i+1,1);
 	    }		    
 	}
     }
@@ -92,7 +102,7 @@ function remove_chosen_node_from_mutators(chosen)
 function remove_random_output_node() 
 { 
     var chosen=pick_random_output_node();
-    remove_chosen_node_from_all_paths(chosen);
+    remove_path_with_output_node(chosen);
     remove_chosen_from_files(chosen);
 }
 
