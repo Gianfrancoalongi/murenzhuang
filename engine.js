@@ -88,12 +88,26 @@ function remove_chosen_node_from_all_paths(chosen)
 	var index=paths[i].indexOf(chosen);
 	if ( index != -1 ) {
 	    paths[i].splice(index,1);
-	    if ( (paths[i].length == 1) || 
-		((paths[i][0] == STDIN) && (paths[i][1] == STDOUT) && (paths[i].length == 2)) ) {
+	    if ( path_should_be_removed(i) ) { 
 		paths.splice(i,1);
 	    }
 	}
     }
+}
+
+function path_should_be_removed(index) {
+    return (path_is_single_node(index) || 
+	    path_is_dummy_path(index));
+}
+
+function path_is_single_node(index) {
+    return (paths[index].length == 1);
+}
+
+function path_is_dummy_path(index) {
+    return ((paths[index][0] == STDIN) && 
+	    (paths[index][1] == STDOUT) && 
+	    (paths[index].length == 2));
 }
 
 function remove_chosen_node_from_mutators(chosen)
