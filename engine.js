@@ -76,6 +76,9 @@ function remove_chosen_node_from_all_paths(chosen)
 	    if (paths[i].length == 1) {
 		paths.splice(i,1);
 	    }
+	    if (paths[i][0] == STDIN && paths[i][1] == STDOUT && paths[i].length == 2) {
+		paths.splice(i,1);
+	    }		    
 	}
     }
 }
