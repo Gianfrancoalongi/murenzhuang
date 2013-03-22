@@ -13,6 +13,25 @@ function initialize()
     paths.push([STDIN,STDOUT]);
 }
 
+function next_step()
+{
+    var ADD_MUT='add_mutator';
+    var ADD_OUT='add_output';
+    var REMOVE='remove_node';
+    var type=choose_one_randomly([ADD_MUT,ADD_MUT,ADD_OUT,REMOVE]);
+    console.log(type);
+    switch(type) {
+    case ADD_MUT:
+	add_mutator_randomly_on_edge();
+	break;
+    case ADD_OUT:
+	add_output_node_randomly_from_input_node_or_mutator_node();
+	break;
+    case REMOVE:
+	remove_node_randomly();
+	break;
+    }
+}
 
 function add_mutator_from_input()
 { 
@@ -38,7 +57,12 @@ function add_mutator_randomly_on_edge()
 
 function add_output_node_randomly_from_input_node_or_mutator_node()
 {
-    if (Math.round(Math.random()) == 0) {
+    var possibles=['stdin'];
+    if (there_are_any_mutator_nodes()) {
+	possibles.push('mutator');
+    }
+    var chosen=choose_one_randomly(possibles);
+    if ( chosen == 'stdin' ) {
 	add_output_node_from_input();
     }else{
 	add_output_node_from_random_mutator_node();
@@ -51,10 +75,8 @@ function remove_node_randomly()
     if (possibles.length > 0) {
 	var chosen=choose_one_randomly(possibles);
 	if ( chosen == 'output' ) {
-	    console.log('Removing file');
 	    remove_random_output_node();
 	}else{
-	    console.log('Removing node');
 	    remove_random_mutator_node();
 	}
     }
