@@ -30,11 +30,9 @@ function add_mutator_randomly_on_edge()
 {
     var mutator=create_new_mutator();
     var chosen=randomly_choose_existing_path();
-    var possible_points=chosen.length-1;           
-    var point=Math.floor(Math.random()*possible_points+1);
+    var point=Math.round(Math.random()*chosen.length);
     var new_edge=copy_edge(chosen);
     new_edge.splice(point,0,mutator);
-    new_edge.splice(1,point-1),
     paths.push(new_edge);
 }
 
