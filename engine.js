@@ -19,26 +19,40 @@ function new_graph(img_id)
 	    this.make_graphviz_graph();
 	},
 
-	done_and_draw: function() {
-	    this.done();
-	    this.make_graphviz_graph();
+	next_step: function() {
+	    var actions = [ADD_MUTATOR,ADD_OUTPUT,REMOVE_NODE];
+	    var chosen_action = choose_one_randomly(actions);
+	    this.next_step_based_on_action(chosen_action);	    
 	},
 
-	done: function() {
-	    console.log('do something with newly added or deleted');
-	    this.newly_added_path=[];
-	    this.newly_removed_path=[];
+	next_step_based_on_action: function(action) {
+	    console.log(action);
+	    switch(action) {
+	    case ADD_MUTATOR:
+		this.add_mutator_randomly_on_edge();
+		break;
+	    case ADD_OUTPUT:
+		this.add_output_node_randomly_from_input_node_or_mutator_node();
+		break;
+	    case REMOVE_NODE:
+		this.remove_node_randomly();
+		break;
+	    }
 	},
 
 	add_mutator_randomly_on_edge: function() {
 	    var mutator = this.create_new_mutator();
 	    var chosen = this.randomly_choose_existing_path();
 	    var point = Math.floor(Math.random()*(chosen.length-1))+1;
-	    var new_edge = copy_edge(chosen);
-	    new_edge.splice(point,0,mutator);
-	    this.paths.push(new_edge);
+	    var new_path = copy_path(chosen);
+	    new_path.splice(point,0,mutator);
+	    this.add_new_path_to_list(new_path);
 	},
 
+	add_new_path_to_list: function(new_path) {
+	    this.newly_added_path.push(new_path);
+	},
+	
 	create_new_mutator: function() {
 	    var name = random_mutator_name();
 	    while( this.mutator_name_is_used(name) ) {
@@ -48,21 +62,55 @@ function new_graph(img_id)
 	    return name;           
 	},
 
+	done_and_draw: function() {
+	    this.done();
+	    this.make_graphviz_graph();
+	},
+
+	done: function() {
+	    console.log('do something with newly added or deleted');
+	    this.copy_paths_from_new_to_paths();
+	    this.reset_waiting_lists();
+	},
+
+	copy_paths_from_new_to_paths: function() {
+	    this.paths.push.apply(this.paths,
+				  this.newly_added_path);
+	},
+
+	reset_waiting_lists: function() {
+	    this.newly_added_path=[];
+	    this.newly_removed_path=[];	   
+	},
+
 	mutator_name_is_used: function(name) {
 	    return $.inArray(name, this.mutators) != -1;
 	},
 
-	create_dot_code_from_paths: function() {          
+	create_dot_code_from_paths: function() {
 	    var length = this.paths.length, element = null;
 	    var dot_paths = [];
 	    for (var i = 0; i < length; i++) {
-		element = this.paths[i];
+		element = this.paths[i];		
 		var parts = element.length;
 		for (var j = 1; j < parts; j++) {
 		    dot_paths.push(element[j-1]+"->"+element[j]);
 		}
 	    }
 	    return dot_paths.join(";");
+	},
+
+	create_dot_code_for_newly_added_paths: function() {
+	    var len = this.newly_added_path.length, elem = null;
+	    var dot_code = [];
+	    for (var i = 0; i < len; i++) {
+		elem = this.newly_added_path[i];
+		var nodes = elem.length;
+		for (var j = 1; j < nodes; j++) {
+		    dot_code.push(elem[j-1]+"->"+elem[j]+'[color="green"]');
+		}
+	    }
+	    return dot_code.join(';');
 	},
 	
 	create_output_shape_dot_code: function() {
@@ -101,12 +149,12 @@ function new_graph(img_id)
 		}
 	    }
 	    var path_index = choose_one_randomly(path_indices);
-	    var copy = copy_edge(this.paths[path_index]);
 	    var output_file = this.create_new_output_file(); 
+	    var copy = copy_path(this.paths[path_index]);
 	    var mutator_index = copy.indexOf(chosen);
 	    copy.splice(mutator_index+1,0,output_file);
 	    copy.splice(mutator_index+2,copy.length-mutator_index-2);
-	    this.paths.push(copy);
+	    this.add_new_path_to_list(copy);
 	},
 
 	randomly_choose_existing_path: function() {
@@ -227,38 +275,21 @@ function new_graph(img_id)
 	},
 	
 	add_output_node_from_input: function() {
-	    this.add_node_from(STDIN,
-			       this.create_new_output_file()
-			      );
-	},
-
-	next_step_based_on_action: function(action) {
-	    console.log(action);
-	    switch(action) {
-	    case ADD_MUTATOR:
-		this.add_mutator_randomly_on_edge();
-		break;
-	    case ADD_OUTPUT:
-		this.add_output_node_randomly_from_input_node_or_mutator_node();
-		break;
-	    case REMOVE_NODE:
-		this.remove_node_randomly();
-		break;
-	    }
-	},
-
-	next_step: function() {
-	    var actions = [ADD_MUTATOR,ADD_OUTPUT,REMOVE_NODE];
-	    var chosen_action = choose_one_randomly(actions);
-	    this.next_step_based_on_action(chosen_action);	    
+	    this.add_new_path_to_list([STDIN,this.create_new_output_file()]);
 	},
 	
 	make_graphviz_graph: function()
 	{
 	    var input_output = create_edge_shape_dot_code();
 	    var output_shapes = this.create_output_shape_dot_code();
+	    var green_paths_dot_code = this.create_dot_code_for_newly_added_paths();
 	    var path_dot_code = this.create_dot_code_from_paths();
-	    var dot_code = 'strict digraph gr{ ' + input_output + output_shapes + path_dot_code + ' }';
+	    var dot_code = 'strict digraph gr{ '
+		+ input_output	    
+		+ output_shapes
+		+ green_paths_dot_code
+		+ path_dot_code 
+		+ ' }';
 	    var options = {cht: "gv", chl: dot_code };
 	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
 	    $('#'+this.img_id).attr('src',request);
@@ -277,7 +308,7 @@ function choose_one_randomly(possibles)
     return possibles[index];
 }
 
-function copy_edge(chosen)
+function copy_path(chosen)
 {
     var new_edge=[];
     for(var i = 0; i < chosen.length; i++) {
