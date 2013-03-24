@@ -7,11 +7,17 @@ var REMOVE_NODE='remove_node';
 function new_graph(img_id) 
 { 
     var graph = {
+
 	paths: [[STDIN,STDOUT]],
 	files: [],
 	mutators: [],
 	img_id: img_id,
+
+	newly_added_mutator:[],
+	newly_added_file:[],
 	newly_added_path:[],
+	newly_removed_mutator:[],
+	newly_removed_files:[],
 	newly_removed_path:[],
 
 	next_step_and_draw: function() {
@@ -58,29 +64,56 @@ function new_graph(img_id)
 	    while( this.mutator_name_is_used(name) ) {
 		name = random_mutator_name();
 	    }
-	    this.mutators.push(name);
+	    this.add_new_mutator_to_list(name);
 	    return name;           
 	},
 
+	add_new_mutator_to_list: function(new_mutator) {
+	    this.newly_added_mutator.push(new_mutator);
+	},
+	
 	done_and_draw: function() {
 	    this.done();
 	    this.make_graphviz_graph();
 	},
 
 	done: function() {
-	    console.log('do something with newly added or deleted');
-	    this.copy_paths_from_new_to_paths();
+	    this.copy_mutators_from_new_to_existing();
+	    this.copy_files_from_new_to_existing();
+	    this.copy_paths_from_new_to_existing();
 	    this.reset_waiting_lists();
 	},
 
-	copy_paths_from_new_to_paths: function() {
+	copy_mutators_from_new_to_existing: function() {
+	    this.mutators.push.apply(this.mutators,
+				     this.newly_added_mutator);
+	},
+
+	copy_files_from_new_to_existing: function() {
+	    this.files.push.apply(this.files,
+				  this.newly_added_file);
+	},
+
+	copy_paths_from_new_to_existing: function() {
 	    this.paths.push.apply(this.paths,
 				  this.newly_added_path);
 	},
 
 	reset_waiting_lists: function() {
-	    this.newly_added_path=[];
-	    this.newly_removed_path=[];	   
+	    this.reset_newly_added_lists();
+	    this.reset_newly_removed_lists();
+	},
+
+	reset_newly_added_lists: function() {
+	    this.newly_added_mutator = [];
+	    this.newly_added_file = [];
+	    this.newly_added_path = [];
+	},
+
+	reset_newly_removed_lists: function() {
+	    this.newly_removed_mutator = [];
+	    this.newly_removed_file = [];
+	    this.newly_removed_path = [];
 	},
 
 	mutator_name_is_used: function(name) {
@@ -113,8 +146,31 @@ function new_graph(img_id)
 	    return dot_code.join(';');
 	},
 	
+	create_dot_code_for_newly_added_mutators: function() {
+	    var len = this.newly_added_mutator.length, elem = null;
+	    var dot_code = [];
+	    for (var i = 0; i < len; i++) {
+		elem = this.newly_added_mutator[i];
+		dot_code.push(elem+'[color="green"]');
+	    }	    
+	    return dot_code.join(';');
+	},
+
+	create_dot_code_for_newly_added_files: function() {
+	    var len = this.newly_added_file.length, elem = null;
+	    var dot_code = [];
+	    for (var i = 0; i < len; i++) {
+		elem = this.newly_added_file[i];
+		dot_code.push(elem+'[color="green"]');
+	    }
+	    return dot_code.join(';');
+	},
+	
 	create_output_shape_dot_code: function() {
-	    return this.files.join('[shape="note"];')+'[shape="note"];';
+	    var existing  = this.files.join('[shape="note"];')+'[shape="note"];';
+	    var newly_added = this.newly_added_file.join('[shape="note"];')+'[shape="note"];';
+	    return (existing + newly_added);
+	    
 	},
 
 	file_name_is_used: function(file_name) {
@@ -126,10 +182,14 @@ function new_graph(img_id)
 	    while( this.file_name_is_used(file_name) ) {
 		file_name = random_file_name();
 	    }
-	    this.files.push(file_name);
+	    this.add_new_file_to_list(file_name);
 	    return file_name;
 	},
 
+	add_new_file_to_list: function(new_file) {
+	    this.newly_added_file.push(new_file);
+	},
+	
 	add_node_from: function(source,new_node) {
 	    this.paths.push([source,new_node]);
 	},
@@ -283,11 +343,15 @@ function new_graph(img_id)
 	    var input_output = create_edge_shape_dot_code();
 	    var output_shapes = this.create_output_shape_dot_code();
 	    var green_paths_dot_code = this.create_dot_code_for_newly_added_paths();
+	    var green_mutators_dot_code = this.create_dot_code_for_newly_added_mutators();
+	    var green_files_dot_code = this.create_dot_code_for_newly_added_files();
 	    var path_dot_code = this.create_dot_code_from_paths();
 	    var dot_code = 'strict digraph gr{ '
-		+ input_output	    
+		+ input_output
 		+ output_shapes
+		+ green_mutators_dot_code
 		+ green_paths_dot_code
+		+ green_files_dot_code
 		+ path_dot_code 
 		+ ' }';
 	    var options = {cht: "gv", chl: dot_code };
