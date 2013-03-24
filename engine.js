@@ -1,11 +1,10 @@
-var STDIN="STDIN";
-var STDOUT="STDOUT";
-var ADD_MUTATOR='add_mutator';
-var ADD_OUTPUT='add_output';
-var REMOVE_NODE='remove_node';
+var STDIN = "STDIN";
+var STDOUT = "STDOUT";
+var ADD_MUTATOR = 'add_mutator';
+var ADD_OUTPUT = 'add_output';
+var REMOVE_NODE = 'remove_node';
 
-function new_graph(img_id) 
-{ 
+function new_graph(img_id) { 
     var graph = {
 
 	paths: [[STDIN,STDOUT]],
@@ -365,15 +364,13 @@ function new_graph(img_id)
 
 var graph = new_graph('graph_img');
 
-function choose_one_randomly(possibles) 
-{
+function choose_one_randomly(possibles) {
     var max=possibles.length - 1;
     var index=Math.round(Math.random()*max);
     return possibles[index];
 }
 
-function copy_path(chosen)
-{
+function copy_path(chosen) {
     var new_edge=[];
     for(var i = 0; i < chosen.length; i++) {
 	new_edge[i] = chosen[i];
@@ -381,17 +378,14 @@ function copy_path(chosen)
     return new_edge;
 }
 
-function random_mutator_name()
-{
+function random_mutator_name() {
     return "mutator_"+Math.floor((Math.random()*100)+1);
 }
 
-function random_file_name()
-{
+function random_file_name() {
     return "file_"+Math.floor((Math.random()*100)+1);
 }
 
-function create_edge_shape_dot_code()
-{
+function create_edge_shape_dot_code() {
     return (STDIN+'[shape="house"];'+STDOUT+'[shape="invhouse"];')
 }
