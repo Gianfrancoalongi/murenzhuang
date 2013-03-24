@@ -6,17 +6,14 @@
   </head>
   <body> 
     <div>
-      <input type="button" onclick="next_step()" value="Next step">
-      <input type="button" onclick="make_graphviz_graph()" value="Redraw">
+      <input type="button" onclick="graph.next_step_and_draw()" value="Next step">
+      <input type="button" onclick="graph.done_and_draw()" value="Done">
     </div>
     <div>
-      <center>
-	<img id="graph_img"/>
-      </center>
+      <img id="graph_img"/>
     </div>
-    <script> 
-           initialize();
-           make_graphviz_graph();
-    </script> 
+    <script>
+      graph.make_graphviz_graph();
+    </script>
   </body>
 </html>
