@@ -81,6 +81,7 @@ function new_graph(img_id) {
 	    this.copy_files_from_new_to_existing();
 	    this.copy_paths_from_new_to_existing();
 	    this.reset_waiting_lists();
+	    this.remove_duplicate_paths();
 	},
 
 	copy_mutators_from_new_to_existing: function() {
@@ -101,6 +102,14 @@ function new_graph(img_id) {
 	reset_waiting_lists: function() {
 	    this.reset_newly_added_lists();
 	    this.reset_newly_removed_lists();
+	},
+	
+	remove_duplicate_paths: function() {
+	    var unique = this.paths.filter( function(itm,i,a) 
+					    {
+						return i == a.indexOf(itm);
+					    });
+	    this.paths = unique;
 	},
 
 	reset_newly_added_lists: function() {
