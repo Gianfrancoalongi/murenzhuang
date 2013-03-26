@@ -276,14 +276,46 @@ function new_graph(img_id) {
 	},
 
 	remove_all_paths_with_node: function(chosen) {  
-	    var len=this.paths.length;
+	    var len = this.paths.length;
+	    var elem = null;
 	    while(len--) {
-		var index=this.paths[len].indexOf(chosen);
+		elem = this.paths[len];
+		var index = elem.indexOf(chosen);
 		if ( index != -1 ) {
-		    this.add_path_to_newly_removed(this.paths[len]);
+		    this.remove_mutators_that_are_not_in_other_paths(elem);
+		    this.add_path_to_newly_removed(elem);
 		    this.paths.splice(len,1);
 		}
 	    }
+	},
+
+	remove_mutators_that_are_not_in_other_paths: function(path) {
+	    var len = path.length, elem = null;
+	    for (var i = 0; i < len; i++ ) { 
+		elem = path[i];
+		if ( this.is_mutator(elem) && 
+		     this.is_not_in_other_paths(path,elem) ) {
+		    this.remove_chosen_node_from_mutators(elem);		    
+		}
+	    }
+	},
+
+	is_mutator: function(node) { 
+	    return ( this.mutators.indexOf(node) != -1);
+	},
+
+	is_not_in_other_paths: function(ignore_path,node) {
+	    var len = this.paths.length, elem = null;
+	    for (var i = 0; i < len; i++) {
+		elem = this.paths[i];
+		if ( elem == ignore_path ) { 
+		    continue; 
+		}
+		if ( elem.indexOf(node) != -1 ) {
+		    return false;
+		}
+	    }
+	    return true;
 	},
 	
 	add_path_to_newly_removed: function(path) {
