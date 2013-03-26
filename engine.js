@@ -130,29 +130,11 @@ function new_graph(img_id) {
 	},
 
 	create_dot_code_from_paths: function() {
-	    var length = this.paths.length, element = null;
-	    var dot_paths = [];
-	    for (var i = 0; i < length; i++) {
-		element = this.paths[i];		
-		var parts = element.length;
-		for (var j = 1; j < parts; j++) {
-		    dot_paths.push(element[j-1]+"->"+element[j]);
-		}
-	    }
-	    return dot_paths.join(";");
+	    return black_dot_code_paths(this.paths);
 	},
 
 	create_dot_code_for_newly_added_paths: function() {
-	    var len = this.newly_added_path.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_added_path[i];
-		var nodes = elem.length;
-		for (var j = 1; j < nodes; j++) {
-		    dot_code.push(elem[j-1]+"->"+elem[j]+'[color="green"]');
-		}
-	    }
-	    return dot_code.join(';');
+	    return green_dot_code_paths(this.newly_added_path);
 	},
 	
 	create_dot_code_for_newly_added_mutators: function() {
@@ -172,16 +154,7 @@ function new_graph(img_id) {
 	},
 
 	create_dot_code_for_newly_removed_paths: function() {
-	    var len = this.newly_removed_path.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_removed_path[i];
-		var nodes = elem.length;
-		for (var j = 1; j < nodes; j++) {
-		    dot_code.push(elem[j-1]+"->"+elem[j]+'[color="red"]');
-		}
-	    }
-	    return dot_code.join(';');	    
+	    return red_dot_code_paths(this.newly_removed_path);
 	},
 
 	create_output_shape_dot_code: function() {
@@ -406,12 +379,37 @@ function new_graph(img_id) {
 
 var graph = new_graph('graph_img');
 
+function black_dot_code_paths(path) {
+    return colored_paths(path,"black");
+}
+
+function green_dot_code_paths(path) {
+    return colored_paths(path,"green");
+}
+
+function red_dot_code_paths(path) {
+    return colored_paths(path,"red");
+}
+
+function colored_paths(path,color) {
+    var len = path.length, elem = null;
+    var dot_code = [];
+    for (var i = 0; i < len; i++) {
+	elem = path[i];
+	var nodes = elem.length;
+	for (var j = 1; j < nodes; j++) {
+	    dot_code.push(elem[j-1]+"->"+elem[j]+'[color='+color+']');
+	}
+    }
+    return dot_code.join(';');
+}
+
 function red_elements(array) {
-    colored_elements(array,"red");
+    return colored_elements(array,"red");
 }
 
 function green_elements(array) {
-    colored_elements(array,"green");
+    return colored_elements(array,"green");
 }
 
 function colored_elements(array,color) {
