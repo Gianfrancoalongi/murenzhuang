@@ -23,6 +23,13 @@ function new_graph(img_id) {
 	next_step_and_draw: function() {
 	    this.next_step();
 	    this.make_graphviz_graph();
+	    switch_the_button_into_done_button();
+	},
+
+	done_and_draw: function() {
+	    this.done();
+	    this.make_graphviz_graph();
+	    switch_the_button_into_next_step_button();
 	},
 
 	next_step: function() {
@@ -72,11 +79,6 @@ function new_graph(img_id) {
 	    this.newly_added_mutator.push(new_mutator);
 	},
 	
-	done_and_draw: function() {
-	    this.done();
-	    this.make_graphviz_graph();
-	},
-
 	done: function() {
 	    this.copy_mutators_from_new_to_existing();
 	    this.copy_files_from_new_to_existing();
@@ -378,6 +380,16 @@ function new_graph(img_id) {
 }
 
 var graph = new_graph('graph_img');
+
+function switch_the_button_into_done_button() {
+    $('#the_button').attr('value',"Done");
+    $('#the_button').attr('onclick','graph.done_and_draw()');
+}
+
+function switch_the_button_into_next_step_button() {
+    $('#the_button').attr('value',"Next step");
+    $('#the_button').attr('onclick','graph.next_step_and_draw()');
+}
 
 function black_dot_code_paths(path) {
     return colored_paths(path,"black");
