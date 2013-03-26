@@ -33,7 +33,7 @@ function new_graph(img_id) {
 	},
 
 	next_step: function() {
-	    var actions = [ADD_MUTATOR,ADD_OUTPUT,REMOVE_NODE];
+	    var actions = [ADD_OUTPUT,ADD_MUTATOR,REMOVE_NODE,REMOVE_NODE];
 	    var chosen_action = choose_one_randomly(actions);
 	    this.next_step_based_on_action(chosen_action);	    
 	},

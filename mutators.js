@@ -6,16 +6,6 @@ function new_mutator(id) {
 	transform: this.random_transform(),
 	arguments: this.random_arguments(),
 
-	random_transform: function() {
-	    return choose_one_randomly(["order",
-					"increase",
-					"decrease",
-					"type",
-					"copy",
-					"sum",
-					"encode"]);
-	}
-
 	random_arguments: function() {
 	    var upto = this.buffer + 1;
 	    var args = shuffle(sequence(1,upto));
@@ -25,6 +15,16 @@ function new_mutator(id) {
 	
     };
     return mutator;
+}
+
+function random_transform() {
+    return choose_one_randomly(["order",
+				"increase",
+				"decrease",
+				"type",
+				"copy",
+				"sum",
+				"encode"]);
 }
 
 function random_buffer_size() {
@@ -46,7 +46,7 @@ function sequence(from,to) {
 }
 
 function remove_some(array) {
-    var len = array.length;
+    var len = array.length - 1;
     wile( len-- ) {
 	if ( Math.round(Math.random()) == 0 ) {
 	    array.splice(len,1);
