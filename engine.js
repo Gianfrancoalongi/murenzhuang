@@ -156,43 +156,19 @@ function new_graph(img_id) {
 	},
 	
 	create_dot_code_for_newly_added_mutators: function() {
-	    var len = this.newly_added_mutator.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_added_mutator[i];
-		dot_code.push(elem+'[color="green"]');
-	    }	    
-	    return dot_code.join(';');
+	    return green_elements(this.newly_added_mutator);
 	},
 
 	create_dot_code_for_newly_added_files: function() {
-	    var len = this.newly_added_file.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_added_file[i];
-		dot_code.push(elem+'[color="green"]');
-	    }
-	    return dot_code.join(';');
+	    return green_elements(this.newly_added_file);
 	},
 
 	create_dot_code_for_newly_removed_mutators: function() {
-	    var len = this.newly_removed_mutator.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_removed_mutator[i];
-		dot_code.push(elem+'[color="red"]');
-	    }
-	    return dot_code.join(';');
+	    return red_elements(this.newly_removed_mutator);
 	},
 
 	create_dot_code_for_newly_removed_files: function() {
-	    var len = this.newly_removed_files.length, elem = null;
-	    var dot_code = [];
-	    for (var i = 0; i < len; i++) {
-		elem = this.newly_removed_files[i];
-		dot_code.push(elem+'[color="red"]');
-	    }
-	    return dot_code.join(';');	    
+	    return red_elements(this.newly_removed_files);
 	},
 
 	create_dot_code_for_newly_removed_paths: function() {
@@ -207,7 +183,7 @@ function new_graph(img_id) {
 	    }
 	    return dot_code.join(';');	    
 	},
-	
+
 	create_output_shape_dot_code: function() {
 	    var existing  = this.files.join('[shape="note"];')+'[shape="note"];';
 	    var newly_added = this.newly_added_file.join('[shape="note"];')+'[shape="note"];';
@@ -429,6 +405,24 @@ function new_graph(img_id) {
 }
 
 var graph = new_graph('graph_img');
+
+function red_elements(array) {
+    colored_elements(array,"red");
+}
+
+function green_elements(array) {
+    colored_elements(array,"green");
+}
+
+function colored_elements(array,color) {
+    var len = array.length, elem = null;
+    var dot_code = [];
+    for (var i = 0; i < len; i++) {
+	elem = array[i];
+	dot_code.push(elem+'[color='+color+']');
+    }	    
+    return dot_code.join(';');
+}
 
 function choose_one_randomly(possibles) {
     var max=possibles.length - 1;
