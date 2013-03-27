@@ -2,7 +2,8 @@ var STDIN = "STDIN";
 var STDOUT = "STDOUT";
 var ADD_MUTATOR = 'add_mutator';
 var ADD_OUTPUT = 'add_output';
-var REMOVE_NODE = 'remove_node';
+var REMOVE_MUTATOR_NODE = 'remove_mutator_node';
+var REMOVE_OUTPUT_NODE = 'remove_output_node';
 
 function new_graph(img_id) { 
 
@@ -33,9 +34,20 @@ function new_graph(img_id) {
 	},
 
 	next_step: function() {
-	    var actions = [ADD_OUTPUT,ADD_MUTATOR,REMOVE_NODE,REMOVE_NODE];
+	    var actions = this.determine_possible_actions();
 	    var chosen_action = choose_one_randomly(actions);
 	    this.next_step_based_on_action(chosen_action);	    
+	},
+
+	determine_possible_actions: function() {
+	    var possible_actions = [ADD_MUTATOR,ADD_OUTPUT];
+	    if ( this.there_are_any_output_nodes() ) {
+		possible_actions.push(REMOVE_OUTPUT_NODE);
+	    }
+	    if ( this.there_are_any_mutator_nodes() ) {
+		possible_actions.push(REMOVE_MUTATOR_NODE);
+	    }
+	    return possible_actions;
 	},
 
 	next_step_based_on_action: function(action) {
@@ -47,8 +59,11 @@ function new_graph(img_id) {
 	    case ADD_OUTPUT:
 		this.add_output_node_randomly_from_input_node_or_mutator_node();
 		break;
-	    case REMOVE_NODE:
-		this.remove_node_randomly();
+	    case REMOVE_MUTATOR_NODE:
+		this.remove_random_mutator_node();
+		break;
+	    case REMOVE_OUTPUT_NODE:
+		this.remove_random_output_node();
 		break;
 	    }
 	},
@@ -340,7 +355,7 @@ function new_graph(img_id) {
 	    return (this.mutators.length > 0);
 	},
 
-	determine_possible_to_remove: function() {
+        determine_possible_to_remove: function() {
 	    var possibles=[];
 	    if (this.there_are_any_output_nodes()) {
 		possibles.push('output');
@@ -350,19 +365,7 @@ function new_graph(img_id) {
 	    }
 	    return possibles;
 	},
-
-	remove_node_randomly: function() {
-	    var possibles = this.determine_possible_to_remove();
-	    if (possibles.length > 0) {
-		var chosen = choose_one_randomly(possibles);
-		if ( chosen == 'output' ) {
-		    this.remove_random_output_node();
-		}else{
-		    this.remove_random_mutator_node();
-		}
-	    }
-	},
-
+	
 	add_output_node_randomly_from_input_node_or_mutator_node: function() {
 	    var possibles=['stdin'];
 	    if (this.there_are_any_mutator_nodes()) {
