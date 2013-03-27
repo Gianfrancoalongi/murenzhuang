@@ -1,5 +1,5 @@
-
 function new_mutator(id) {
+
     var mutator = {
 	id: id,
 	buffer: random_buffer_size(),
@@ -12,7 +12,23 @@ function new_mutator(id) {
 	    remove_some(args);
 	    return args;
 	}
+
+	generate_dot_code: function(color) {
+	    var label_text = this.generate_label_text();
+	    return this.id+'[color='+color+',label='+label_text+']';
+	}
 	
+	generate_label_text: function() {
+	    var txt = ["Buffer:"+this.buffer,
+		       "Transform:"+this.transform,
+		       "[x_i]:"+this.arguments],
+	    return txt.join("\n");
+	}
+	
+	get_name: function() {
+	    return this.id;
+	}
+
     };
     return mutator;
 }

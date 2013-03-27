@@ -5,6 +5,91 @@ var ADD_OUTPUT = 'add_output';
 var REMOVE_MUTATOR_NODE = 'remove_mutator_node';
 var REMOVE_OUTPUT_NODE = 'remove_output_node';
 
+function new_mutator(id) {
+
+    var mutator = {
+	id: id,
+	buffer: random_buffer_size(),
+	transform: this.random_transform(),
+	arguments: this.random_arguments(),
+
+	random_arguments: function() {
+	    var upto = this.buffer + 1;
+	    var args = shuffle(sequence(1,upto));
+	    remove_some(args);
+	    return args;
+	},
+
+	generate_dot_code: function(color) {
+	    var label_text = this.generate_label_text();
+	    return this.id+'[color='+color+',label='+label_text+']';
+	},
+	
+	generate_label_text: function() {
+	    var txt = ["Buffer:"+this.buffer,
+		       "Transform:"+this.transform,
+		       "[x_i]:"+this.arguments],
+	    return txt.join("\n");
+	},
+	
+	get_name: function() {
+	    return this.id;
+	}
+
+    };
+    return mutator;
+}
+
+function new_output(id) {
+
+    var output = {
+	id: id
+
+	generate_dot_code: function(color) {
+	    var txt = this.id+'[shape=note,color=color]'
+	    return (id+
+	}
+    };
+    return output;
+}
+
+function random_transform() {
+    return choose_one_randomly(["order",
+				"increase",
+				"decrease",
+				"type",
+				"copy",
+				"sum",
+				"encode"]);
+}
+
+function random_buffer_size() {
+    Math.round(Math.random()*7)+1;
+}
+
+function shuffle(o){
+    for(var j, x, i = o.length; i; j= parseInt(Math.random() * i), 
+	x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+function sequence(from,to) {
+    var nums=[];
+    for(var i = from; i <= to; i++) {
+	nums.push(i);
+    }
+    return sequence;
+}
+
+function remove_some(array) {
+    var len = array.length - 1;
+    wile( len-- ) {
+	if ( Math.round(Math.random()) == 0 ) {
+	    array.splice(len,1);
+	}
+    }
+}
+
 function new_graph(img_id) { 
 
     var graph = {
@@ -86,8 +171,9 @@ function new_graph(img_id) {
 	    while( this.mutator_name_is_used(name) ) {
 		name = random_mutator_name();
 	    }
-	    this.add_new_mutator_to_list(name);
-	    return name;           
+	    var mutator = new_mutator(name);
+	    this.add_new_mutator_to_list(mutator);
+	    return mutator;
 	},
 
 	add_new_mutator_to_list: function(new_mutator) {
@@ -445,7 +531,10 @@ function colored_paths(path,color) {
 	elem = path[i];
 	var nodes = elem.length;
 	for (var j = 1; j < nodes; j++) {
-	    dot_code.push(elem[j-1]+"->"+elem[j]+'[color='+color+']');
+	    dot_code.push(elem[j-1].generate_dot_code(color)
+			  + "->" 
+			  elem[j].generate_dot_code(color)
+			 );
 	}
     }
     return dot_code.join(';');
