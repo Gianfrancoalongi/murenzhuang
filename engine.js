@@ -1,35 +1,64 @@
-var STDIN = "STDIN";
-var STDOUT = "STDOUT";
+var STDIN = new_edge_node("STDIN","house");
+var STDOUT = new_edge_node("STDOUT","invhouse");
 var ADD_MUTATOR = 'add_mutator';
 var ADD_OUTPUT = 'add_output';
 var REMOVE_MUTATOR_NODE = 'remove_mutator_node';
 var REMOVE_OUTPUT_NODE = 'remove_output_node';
 
-function new_mutator(id) {
+function new_edge_node(id,shape) {
+    var edgenode = {
+	id: id,
+	shape: shape,
+
+	generate_dot_code: function(color) {
+	    return this.id;
+	},
+
+	generate_shape_dot_code: function() { 
+	    return this.id+'[shape='+this.shape+'];'
+	}
+    };
+    return edgenode;
+}
+
+function new_mutator(name) {
 
     var mutator = {
-	id: id,
-	buffer: random_buffer_size(),
-	transform: this.random_transform(),
-	arguments: this.random_arguments(),
+	id: name,
+	buffer: 0,
+	transform: "nothing",
+	args: [],
 
+	set_mutator_values: function() {
+	    this.buffer = random_buffer_size();
+	    this.transform = random_transform();
+	    this.args = this.random_arguments();
+	},
+	
 	random_arguments: function() {
-	    var upto = this.buffer + 1;
-	    var args = shuffle(sequence(1,upto));
-	    remove_some(args);
-	    return args;
+	    var upto = this.buffer + 1;	    
+	    var a = sequence(1,upto);
+	    var b = shuffle(a);
+	    remove_some(b);
+	    return b;
 	},
 
 	generate_dot_code: function(color) {
+	    return this.id+'[color='+color+']';
+	},
+
+	generate_shape_dot_code: function() {
 	    var label_text = this.generate_label_text();
-	    return this.id+'[color='+color+',label='+label_text+']';
+	    var result = this.id+'[label="'+label_text+'"]';
+	    console.log(result);
+	    return result;
 	},
 	
 	generate_label_text: function() {
 	    var txt = ["Buffer:"+this.buffer,
 		       "Transform:"+this.transform,
-		       "[x_i]:"+this.arguments],
-	    return txt.join("\n");
+		       "[x_i]:"+this.args];
+	    return txt.join("|");
 	},
 	
 	get_name: function() {
@@ -37,18 +66,23 @@ function new_mutator(id) {
 	}
 
     };
+    mutator.set_mutator_values();
     return mutator;
 }
 
-function new_output(id) {
+function new_output(name) {
 
     var output = {
-	id: id
+	id: name,
 
 	generate_dot_code: function(color) {
-	    var txt = this.id+'[shape=note,color=color]'
-	    return (id+
+	    return this.id+'[color='+color+']';
+	},
+
+	generate_shape_dot_code: function() {
+	    return this.id+'[shape=note]';
 	}
+
     };
     return output;
 }
@@ -64,28 +98,28 @@ function random_transform() {
 }
 
 function random_buffer_size() {
-    Math.round(Math.random()*7)+1;
+    return Math.round(Math.random()*7)+1;
 }
 
 function shuffle(o){
     for(var j, x, i = o.length; i; j= parseInt(Math.random() * i), 
 	x = o[--i], o[i] = o[j], o[j] = x);
     return o;
-};
+}
 
 function sequence(from,to) {
     var nums=[];
     for(var i = from; i <= to; i++) {
 	nums.push(i);
     }
-    return sequence;
+    return nums;
 }
 
-function remove_some(array) {
-    var len = array.length - 1;
-    wile( len-- ) {
+function remove_some(input) {
+    var len = input.length - 1;
+    while( len-- ) {
 	if ( Math.round(Math.random()) == 0 ) {
-	    array.splice(len,1);
+	    input.splice(len,1);
 	}
     }
 }
@@ -261,11 +295,19 @@ function new_graph(img_id) {
 	},
 
 	create_output_shape_dot_code: function() {
-	    var existing  = this.files.join('[shape="note"];')+'[shape="note"];';
-	    var newly_added = this.newly_added_file.join('[shape="note"];')+'[shape="note"];';
-	    var newly_removed = this.newly_removed_files.join('[shape="note"];')+'[shape="note"];';
-	    return (existing + newly_added + newly_removed);
-	    
+	    var files = [];
+	    files.push.apply(files,this.files);
+	    files.push.apply(files,this.newly_added_file);
+	    files.push.apply(files,this.newly_removed_files);
+	    return create_shape_dot_code(files);
+	},
+
+	create_mutator_shape_dot_code: function() {
+	    var mutators = [];
+	    mutators.push.apply(mutators,this.mutators);
+	    mutators.push.apply(mutators,this.newly_added_mutator);
+	    mutators.push.apply(mutators,this.newly_removed_mutator);
+	    return create_shape_dot_code(mutators);
 	},
 
 	file_name_is_used: function(file_name) {
@@ -273,12 +315,13 @@ function new_graph(img_id) {
 	},
 
 	create_new_output_file: function() {
-	    var file_name = random_file_name();
-	    while( this.file_name_is_used(file_name) ) {
-		file_name = random_file_name();
+	    var name = random_file_name();
+	    while( this.file_name_is_used(name) ) {
+		name = random_file_name();
 	    }
-	    this.add_new_file_to_list(file_name);
-	    return file_name;
+	    var output = new_output(name);
+	    this.add_new_file_to_list(output);
+	    return output;
 	},
 
 	add_new_file_to_list: function(new_file) {
@@ -294,11 +337,11 @@ function new_graph(img_id) {
 	},
 	
 	add_output_node_from_random_mutator_node: function() {
-	    var chosen=this.choose_random_mutator();
-	    var path_indices=[];
-	    var len=this.paths.length;
-	    for(var i=0; i< len; i++) {
-		var index=this.paths[i].indexOf(chosen);
+	    var chosen = this.choose_random_mutator();
+	    var path_indices = [];
+	    var len = this.paths.length;
+	    for(var i = 0; i < len; i++) {
+		var index = this.paths[i].indexOf(chosen);
 		if ( index != -1 ) {
 		    path_indices.push(i);
 		}
@@ -471,8 +514,9 @@ function new_graph(img_id) {
 
 	make_graphviz_graph: function()
 	{
-	    var input_output = create_edge_shape_dot_code();
+	    var input_output_shapes = create_edge_shape_dot_code();
 	    var output_shapes = this.create_output_shape_dot_code();
+	    var mutator_shapes = this.create_mutator_shape_dot_code();
 	    var green_paths_dot_code = this.create_dot_code_for_newly_added_paths();
 	    var green_mutators_dot_code = this.create_dot_code_for_newly_added_mutators();
 	    var green_files_dot_code = this.create_dot_code_for_newly_added_files();
@@ -481,8 +525,9 @@ function new_graph(img_id) {
 	    var red_paths_dot_code = this.create_dot_code_for_newly_removed_paths();
 	    var path_dot_code = this.create_dot_code_from_paths();
 	    var dot_code = 'strict digraph gr{ '
-		+ input_output
+		+ input_output_shapes
 		+ output_shapes
+		+ mutator_shapes
 		+ green_mutators_dot_code
 		+ green_paths_dot_code
 		+ green_files_dot_code
@@ -533,7 +578,7 @@ function colored_paths(path,color) {
 	for (var j = 1; j < nodes; j++) {
 	    dot_code.push(elem[j-1].generate_dot_code(color)
 			  + "->" 
-			  elem[j].generate_dot_code(color)
+			  + elem[j].generate_dot_code(color)
 			 );
 	}
     }
@@ -572,6 +617,7 @@ function copy_path(chosen) {
     return new_edge;
 }
 
+
 function random_mutator_name() {
     return "mutator_"+Math.floor((Math.random()*100)+1);
 }
@@ -581,5 +627,17 @@ function random_file_name() {
 }
 
 function create_edge_shape_dot_code() {
-    return (STDIN+'[shape="house"];'+STDOUT+'[shape="invhouse"];')
+    return STDIN.generate_shape_dot_code() + 
+	STDOUT.generate_shape_dot_code();
+}
+
+function create_shape_dot_code(nodes) {
+    var len = nodes.length;
+    var result = [];
+    var elem = null;
+    for (var i = 0; i < len; i++) {	
+	elem = nodes[i];
+	result.push( elem.generate_shape_dot_code() );
+    }
+    return result.join(';');
 }
