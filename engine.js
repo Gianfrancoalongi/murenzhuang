@@ -511,33 +511,55 @@ function new_graph(img_id) {
 	    this.add_new_path_to_list([STDIN,this.create_new_output_file()]);
 	},
 
+	create_output_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.files,"black");
+	},
+	
+	create_newly_added_output_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.newly_added_file,"green");
+	},
+
+	create_newly_removed_output_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.newly_removed_path,"red");
+	},
+
+	create_mutator_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.mutators,"black");
+	},
+
+	create_newly_added_mutator_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.newly_added_mutator,"green");
+	},
+
+	create_newly_removed_mutator_shapes_dot_code: function() {
+	    return create_shape_dot_code(this.newly_removed_mutator,"red");
+	},	
+
+	generate_shape_dot_code: function() {
+	    return create_edge_shape_dot_code() 
+	        +  this.create_output_shapes_dot_code()
+		+  this.create_newly_added_output_shapes_dot_code()
+		+  this.create_newly_removed_output_shapes_dot_code()
+	        +  this.create_mutator_shapes_dot_code() 
+	        +  this.create_newly_added_mutator_shapes_dot_code() 
+	        +  this.create_newly_removed_mutator_shapes_dot_code();
+	},
+
+	generate_paths_dot_code: function() { 	    
+	    return this.create_dot_code_for_newly_added_paths()
+		+  this.create_dot_code_for_newly_removed_paths()
+	        +  this.create_dot_code_from_paths();
+	},
+
 	make_graphviz_graph: function()
 	{
-	    var input_output_shapes = create_edge_shape_dot_code();
-	    var output_shapes = this.create_output_shape_dot_code();
-	    var mutator_shapes = this.create_mutator_shape_dot_code();
-	    var green_paths_dot_code = this.create_dot_code_for_newly_added_paths();
-	    var green_mutators_dot_code = this.create_dot_code_for_newly_added_mutators();
-	    var green_files_dot_code = this.create_dot_code_for_newly_added_files();
-	    var red_mutators_dot_code = this.create_dot_code_for_newly_removed_mutators();
-	    var red_files_dot_code = this.create_dot_code_for_newly_removed_files();
-	    var red_paths_dot_code = this.create_dot_code_for_newly_removed_paths();
-	    var path_dot_code = this.create_dot_code_from_paths();
+	    var shape_dot_code = this.generate_shape_dot_code();
+	    var paths_dot_code = this.generate_paths_dot_code();
 	    var dot_code = 'strict digraph gr{ '
-		+ input_output_shapes
-		+ output_shapes
-		+ mutator_shapes
-		+ green_mutators_dot_code
-		+ green_paths_dot_code
-		+ green_files_dot_code
-		+ red_mutators_dot_code
-		+ red_files_dot_code
-		+ red_paths_dot_code
-		+ path_dot_code
+		+ shape_dot_code
+		+ paths_dot_code
 		+ ' }';
-
 	    console.log(dot_code);
-
 	    var options = {cht: "gv", chl: dot_code };
 	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
 	    $('#'+this.img_id).attr('src',request);
@@ -578,15 +600,10 @@ function colored_paths(path,color) {
 	elem = path[i];
 	var nodes = elem.length;
 	for (var j = 1; j < nodes; j++) {
-
-	    console.log(elem[j-1].id + ' - ' + elem[j].id);
-
-	    var a = elem[j-1].generate_dot_code(color);
-	    var b = elem[j].generate_dot_code(color);
-
-	    console.log(a + ' || ' + b);
-	    
-	    dot_code.push(a + "->" + b);
+	    dot_code.push(elem[j-1].generate_dot_code() 
+			  + '->'
+			  + elem[j].generate_dot_code() 
+			  + '[color='+color+'];');
 	}
     }
     return dot_code.join(';');
@@ -638,13 +655,13 @@ function create_edge_shape_dot_code() {
 	STDOUT.generate_shape_dot_code();
 }
 
-function create_shape_dot_code(nodes) {
+function create_shape_dot_code(nodes,color) {
     var len = nodes.length;
     var result = [];
     var elem = null;
     for (var i = 0; i < len; i++) {	
 	elem = nodes[i];
-	result.push( elem.generate_shape_dot_code() );
+	result.push( elem.generate_shape_dot_code(color) );
     }
     return result.join(';');
 }
