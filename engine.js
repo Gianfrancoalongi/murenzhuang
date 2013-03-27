@@ -273,40 +273,8 @@ function new_graph(img_id) {
 	    return green_dot_code_paths(this.newly_added_path);
 	},
 	
-	create_dot_code_for_newly_added_mutators: function() {
-	    return green_elements(this.newly_added_mutator);
-	},
-
-	create_dot_code_for_newly_added_files: function() {
-	    return green_elements(this.newly_added_file);
-	},
-
-	create_dot_code_for_newly_removed_mutators: function() {
-	    return red_elements(this.newly_removed_mutator);
-	},
-
-	create_dot_code_for_newly_removed_files: function() {
-	    return red_elements(this.newly_removed_files);
-	},
-
 	create_dot_code_for_newly_removed_paths: function() {
 	    return red_dot_code_paths(this.newly_removed_path);
-	},
-
-	create_output_shape_dot_code: function() {
-	    var files = [];
-	    files.push.apply(files,this.files);
-	    files.push.apply(files,this.newly_added_file);
-	    files.push.apply(files,this.newly_removed_files);
-	    return create_shape_dot_code(files);
-	},
-
-	create_mutator_shape_dot_code: function() {
-	    var mutators = [];
-	    mutators.push.apply(mutators,this.mutators);
-	    mutators.push.apply(mutators,this.newly_added_mutator);
-	    mutators.push.apply(mutators,this.newly_removed_mutator);
-	    return create_shape_dot_code(mutators);
 	},
 
 	file_name_is_used: function(file_name) {
