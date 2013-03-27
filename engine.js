@@ -79,7 +79,7 @@ function new_output(name) {
 	},
 
 	generate_shape_dot_code: function(color) {
-	    return this.id+'[shape=note]';
+	    return this.id+'[shape=note,color='+color+']';
 	}
 
     };
@@ -539,6 +539,7 @@ function new_graph(img_id) {
 	    console.log(this.newly_removed_files);
 	    console.log(this.newly_removed_path);
 	    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+	    console.log(dot_code);
 
 	    var options = {cht: "gv", chl: dot_code };
 	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
