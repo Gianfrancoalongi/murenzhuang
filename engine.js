@@ -10,11 +10,11 @@ function new_edge_node(id,shape) {
 	id: id,
 	shape: shape,
 
-	generate_dot_code: function(color) {
+	generate_dot_code: function() {
 	    return this.id;
 	},
 
-	generate_shape_dot_code: function() { 
+	generate_shape_dot_code: function(color) { 
 	    return this.id+'[shape='+this.shape+'];'
 	}
     };
@@ -43,14 +43,13 @@ function new_mutator(name) {
 	    return b;
 	},
 
-	generate_dot_code: function(color) {
-	    return this.id+'[color='+color+']';
+	generate_dot_code: function() {
+	    return this.id;
 	},
 
-	generate_shape_dot_code: function() {
+	generate_shape_dot_code: function(color) {
 	    var label_text = this.generate_label_text();
-	    var result = this.id+'[label="'+label_text+'"]';
-	    console.log(result);
+	    var result = this.id+'[label="'+label_text+'",color='+color+']';
 	    return result;
 	},
 	
@@ -75,11 +74,11 @@ function new_output(name) {
     var output = {
 	id: name,
 
-	generate_dot_code: function(color) {
-	    return this.id+'[color='+color+']';
+	generate_dot_code: function() {
+	    return this.id;
 	},
 
-	generate_shape_dot_code: function() {
+	generate_shape_dot_code: function(color) {
 	    return this.id+'[shape=note]';
 	}
 
@@ -534,8 +533,11 @@ function new_graph(img_id) {
 		+ red_mutators_dot_code
 		+ red_files_dot_code
 		+ red_paths_dot_code
-		+ path_dot_code 
+		+ path_dot_code
 		+ ' }';
+
+	    console.log(dot_code);
+
 	    var options = {cht: "gv", chl: dot_code };
 	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
 	    $('#'+this.img_id).attr('src',request);
@@ -576,10 +578,15 @@ function colored_paths(path,color) {
 	elem = path[i];
 	var nodes = elem.length;
 	for (var j = 1; j < nodes; j++) {
-	    dot_code.push(elem[j-1].generate_dot_code(color)
-			  + "->" 
-			  + elem[j].generate_dot_code(color)
-			 );
+
+	    console.log(elem[j-1].id + ' - ' + elem[j].id);
+
+	    var a = elem[j-1].generate_dot_code(color);
+	    var b = elem[j].generate_dot_code(color);
+
+	    console.log(a + ' || ' + b);
+	    
+	    dot_code.push(a + "->" + b);
 	}
     }
     return dot_code.join(';');
@@ -598,7 +605,7 @@ function colored_elements(array,color) {
     var dot_code = [];
     for (var i = 0; i < len; i++) {
 	elem = array[i];
-	dot_code.push(elem+'[color='+color+']');
+	dot_code.push(elem.generate_dot_code(color));
     }	    
     return dot_code.join(';');
 }
