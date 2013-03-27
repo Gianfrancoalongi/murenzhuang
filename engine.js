@@ -520,7 +520,7 @@ function new_graph(img_id) {
 	},
 
 	create_newly_removed_output_shapes_dot_code: function() {
-	    return create_shape_dot_code(this.newly_removed_path,"red");
+	    return create_shape_dot_code(this.newly_removed_files,"red");
 	},
 
 	create_mutator_shapes_dot_code: function() {
@@ -559,7 +559,19 @@ function new_graph(img_id) {
 		+ shape_dot_code
 		+ paths_dot_code
 		+ ' }';
-	    console.log(dot_code);
+
+	    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+	    console.log(this.paths);
+	    console.log(this.files);
+	    console.log(this.mutators);
+	    console.log(this.newly_added_mutator);
+	    console.log(this.newly_added_file);
+	    console.log(this.newly_added_path);
+	    console.log(this.newly_removed_mutator);
+	    console.log(this.newly_removed_files);
+	    console.log(this.newly_removed_path);
+	    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+
 	    var options = {cht: "gv", chl: dot_code };
 	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
 	    $('#'+this.img_id).attr('src',request);
