@@ -57,7 +57,7 @@ function new_mutator(name) {
 	    var txt = ["Buffer:"+this.buffer,
 		       "Transform:"+this.transform,
 		       "[x_i]:"+this.args];
-	    return txt.join("|");
+	    return txt.join('\\n');
 	},
 	
 	get_name: function() {
