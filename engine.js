@@ -49,7 +49,7 @@ function new_mutator(name) {
 
 	generate_shape_dot_code: function(color) {
 	    var label_text = this.generate_label_text();
-	    var result = this.id+'[label="'+label_text+'",color='+color+']';
+	    var result = this.id+'[label="'+label_text+'",color='+color+',shape=hexagon]';
 	    return result;
 	},
 	
