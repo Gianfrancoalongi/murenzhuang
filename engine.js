@@ -154,8 +154,9 @@ function new_graph(img_id) {
 	},
 
 	display_history: function() {
-	    var newest = this.history.shift();
-	    var bold = '<b>'+newest+'</b></br>';
+	    var rounds = this.history.length;
+	    var newest = this.history.shift();	    
+	    var bold = '<b>'+newest+' :: '+rounds+' </b></br>';
 	    var normal = this.history.join('</br>');
 	    $('#left').html(bold+normal);
 	    this.history.unshift(newest);
