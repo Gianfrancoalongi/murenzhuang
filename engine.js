@@ -131,6 +131,7 @@ function new_graph(img_id) {
 	files: [],
 	mutators: [],
 	img_id: img_id,
+	history: [],
 
 	newly_added_mutator:[],
 	newly_added_file:[],
@@ -142,6 +143,7 @@ function new_graph(img_id) {
 	next_step_and_draw: function() {
 	    this.next_step();
 	    this.make_graphviz_graph();
+	    this.display_history();
 	    switch_the_button_into_done_button();
 	},
 
@@ -151,25 +153,35 @@ function new_graph(img_id) {
 	    switch_the_button_into_next_step_button();
 	},
 
+	display_history: function() {
+	    var newest = this.history.shift();
+	    var bold = '<b>'+newest+'</b></br>';
+	    var normal = this.history.join('</br>');
+	    $('#left').html(bold+normal);
+	    this.history.unshift(newest);
+	},
+
 	next_step: function() {
 	    var actions = this.determine_possible_actions();
 	    var chosen_action = choose_one_randomly(actions);
-	    this.next_step_based_on_action(chosen_action);	    
+	    this.next_step_based_on_action(chosen_action);
+	    this.history.unshift(chosen_action);
 	},
 
 	determine_possible_actions: function() {
-	    var possible_actions = [ADD_MUTATOR,ADD_OUTPUT];
+	    var possible_actions = [ADD_MUTATOR,ADD_MUTATOR,ADD_OUTPUT];
 	    if ( this.there_are_any_output_nodes() ) {
+		possible_actions.push(REMOVE_OUTPUT_NODE);
 		possible_actions.push(REMOVE_OUTPUT_NODE);
 	    }
 	    if ( this.there_are_any_mutator_nodes() ) {
+		possible_actions.push(REMOVE_MUTATOR_NODE);
 		possible_actions.push(REMOVE_MUTATOR_NODE);
 	    }
 	    return possible_actions;
 	},
 
 	next_step_based_on_action: function(action) {
-	    console.log(action);
 	    switch(action) {
 	    case ADD_MUTATOR:
 		this.add_mutator_randomly_on_edge();
