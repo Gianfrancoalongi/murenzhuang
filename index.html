@@ -4,16 +4,45 @@
     <script language="javascript" type="text/javascript" src="./jquery-1.9.1.min.js"></script>
     <script language="javascript" type="text/javascript" src="./engine.js"></script>
   </head>
+  <style type="text/css" media="screen, print, projection">
+    body,
+    html {
+    margin:5;
+    padding:0;
+    color:#000;
+    background:white;
+    }
+    #wrap {
+    width:auto;
+    margin:5;
+    background:white;
+    }
+    #left {
+    margin: 5;
+    float:left;
+    width:30%;
+    background:white;
+    }
+    #right {
+    float:right;
+    width:70%;
+    background:white;
+    border-color: #f0a35d;
+    }
+  </style>
   <body> 
-    <div>
-      <center>
-      <input type="button" id="the_button" onclick="graph.next_step_and_draw()" value="Next step">
-      </center>
-    </div>
-    <div>
-      <center>
-      <img id="graph_img"/>
-      </center>
+    <div id="wrap">
+      <div id="top" align="center"> 
+	  <input type="button" id="the_button" onclick="graph.next_step_and_draw()" value="Next step">
+      </div>
+      </p>
+      <div id="left" align="center"> 
+	this information here is supposed to be the history
+        of the graph, every step 
+      </div>
+      <div id="right" align="left">
+	  <img id="graph_img"/>
+      </div>
     </div>
     <script>
       graph.make_graphviz_graph();
