@@ -5,14 +5,13 @@ var ADD_OUTPUT = 'add_output';
 var REMOVE_MUTATOR_NODE = 'remove_mutator_node';
 var REMOVE_OUTPUT_NODE = 'remove_output_node';
 
-function new_graph(img_id) { 
+function new_graph() { 
 
     var graph = {
 
 	paths: [[STDIN,STDOUT]],
 	files: [],
 	mutators: [],
-	img_id: img_id,
 	history: [],
 
 	newly_added_mutator:[],
@@ -416,22 +415,25 @@ function new_graph(img_id) {
 
 	make_graphviz_graph: function()
 	{
+	    var URL = 'https://chart.googleapis.com/chart';
 	    var shape_dot_code = this.generate_shape_dot_code();
 	    var paths_dot_code = this.generate_paths_dot_code();
 	    var dot_code = 'strict digraph gr{ '
 		+ shape_dot_code
 		+ paths_dot_code
 		+ ' }';
-	    var options = {cht: "gv", chl: dot_code };
-	    var request = "https://chart.googleapis.com/chart?"+$.param(options);
-	    $('#'+this.img_id).attr('src',request);
+	    $("<form action="+URL+" method='POST' target='graph_frame'></form>")
+	    	.append("<input type='hidden' name='cht' value='gv'/>")
+	    	.append("<input type='hidden' name='chl' value='"+dot_code+"'/>")
+	    	.appendTo('body')
+	    	.submit()
+	    	.remove();
 	}
-
     };
     return graph;
 }
 
-var graph = new_graph('graph_img');
+var graph = new_graph();
 
 function switch_the_button_into_done_button() {
     $('#the_button').attr('value',"Done");
