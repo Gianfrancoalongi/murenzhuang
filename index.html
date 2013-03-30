@@ -15,7 +15,7 @@
     color:#000;
     background:white;
     width: 99%;
-    height: 98%;
+    height: 96%;
     }
     #wrap {
     width:auto;
@@ -43,8 +43,11 @@
   <body> 
     <div id="wrap">
       <div id="top" align="center"> 
-	<input type="button" id="the_button" onclick="graph.next_step_and_draw()" value="Next step">
+	<input type="button" id="the_button" onclick="graph.next_step_and_draw()" 
+	       value="Next step"
+	       style="height:40px">
       </div>
+      </br>
       <div id="left" align="center"> </div>
       <div id="right" align="left">
 	<iframe id="graph_frame" frameBorder="0" display="block">
