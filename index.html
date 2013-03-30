@@ -11,20 +11,19 @@
   <style type="text/css" media="screen, print, projection">
     body,
     html {
-    margin:5;
     padding:0;
     color:#000;
     background:white;
+    width: 99%;
+    height: 98%;
     }
     #wrap {
     width:auto;
-    margin:5;
     background:white;
-    height: 90%;
-    width: 90%;
+    height: 100%;
+    width: 100%;
     }
     #left {
-    margin: 5;
     float:left;
     width:30%;
     height: 100%;
@@ -34,19 +33,22 @@
     float:right;
     width:70%;
     height: 100%;
-    background:white;
-    border-color: #f0a35d;
+    background: white;
+    }
+    #graph_frame {
+    width: 100%;
+    height: 100%;
     }
   </style>
   <body> 
     <div id="wrap">
       <div id="top" align="center"> 
-	  <input type="button" id="the_button" onclick="graph.next_step_and_draw()" value="Next step">
+	<input type="button" id="the_button" onclick="graph.next_step_and_draw()" value="Next step">
       </div>
-      </p>
       <div id="left" align="center"> </div>
       <div id="right" align="left">
-	<iframe id="graph_frame" width="100%" height="90%" display="block"></iframe>
+	<iframe id="graph_frame" frameBorder="0" display="block">
+	</iframe>
       </div>
     </div>
     <script>
