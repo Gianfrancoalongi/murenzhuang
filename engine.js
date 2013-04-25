@@ -54,10 +54,8 @@ function new_graph() {
 	    var possible_actions = [ADD_MUTATOR,ADD_MUTATOR,ADD_OUTPUT];
 	    if ( this.there_are_any_output_nodes() ) {
 		possible_actions.push(REMOVE_OUTPUT_NODE);
-		possible_actions.push(REMOVE_OUTPUT_NODE);
 	    }
 	    if ( this.there_are_any_mutator_nodes() ) {
-		possible_actions.push(REMOVE_MUTATOR_NODE);
 		possible_actions.push(REMOVE_MUTATOR_NODE);
 	    }
 	    return possible_actions;
