@@ -4,7 +4,6 @@ FILES="index.html edge_node.js  engine.js  jquery-1.9.1.min.js  mutator.js  outp
 
 main()
 {
-	clean_up
 	make_tar_release
 	make_zip_release
 }
