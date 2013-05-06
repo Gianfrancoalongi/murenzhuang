@@ -1,0 +1,22 @@
+#!/bin/bash
+
+FILES="index.html edge_node.js  engine.js  jquery-1.9.1.min.js  mutator.js  output.js"
+
+main()
+{
+	clean_up
+	make_tar_release
+	make_zip_release
+}
+
+make_tar_release()
+{
+    tar cvf release/latest.tar ${FILES}
+}
+
+make_zip_release()
+{
+    zip release/latest.zip ${FILES}
+}
+
+main
