@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES="index.html edge_node.js  engine.js  jquery-1.9.1.min.js  mutator.js  output.js"
+FILES="index.html edge_node.js  engine.js  jquery-1.9.1.min.js  mutator.js  output.js change.log"
 
 main()
 {
