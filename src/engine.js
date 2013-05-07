@@ -40,12 +40,7 @@ function new_graph() {
 	},
 
 	display_history: function() {
-	    var rounds = this.history.length;
-	    var newest = this.history.shift();	    
-	    var bold = '<b>'+newest+' :: '+rounds+' </b></br>';
-	    var normal = this.history.join('</br>');
-	    $('#left').append(bold+normal);
-	    this.history.unshift(newest);
+	    $('#left').append(this.history.join('</br>'));
 	},
 
 
@@ -538,22 +533,24 @@ function create_shape_dot_code(nodes,color) {
 }
 
 function mrz_level(rounds) {
-    var titles = ["n00b","script kiddie","code monkey","programmer","haxor","software craftsman","software artisan","grandmaster"];
-    if (rounds < 5) {
-	return ("level "+(rounds%5)+" "+titles[0]+"<br/>");
-    } else if (rounds >= 5 && rounds < 10 )  {
-	return ("level "+(rounds%5)+" "+titles[1]+"<br/>");
-    } else if (rounds >= 10 && rounds < 15) {
-	return ("level "+(rounds%5)+" "+titles[2]+"<br/>");
-    } else if (rounds >= 15 && rounds < 20) {
-	return ("level "+(rounds%5)+" "+titles[3]+"<br/>");
-    } else if (rounds >= 20 && rounds < 25) {
-	return ("level "+(rounds%5)+" "+titles[4]+"<br/>");
-    } else if (rounds >= 25 && rounds < 30) {
-	return ("level "+(rounds%5)+" "+titles[5]+"<br/>");
-    } else if (rounds >= 30 && rounds < 35) {
-	return ("level "+(rounds%5)+" "+titles[6]+"<br/>");
+    var titles = ["n00b","beginner","novice","apprentice","journeyman","craftsman","master","grandmaster"];
+    var chosen = "";
+    var level = 0;
+    if (rounds < 5) { 
+	chosen = titles[0];
+    } else if (rounds >= 5  && rounds < 10) { chosen = titles[1];
+    } else if (rounds >= 10 && rounds < 15) { chosen = titles[2];
+    } else if (rounds >= 15 && rounds < 20) { chosen = titles[3];
+    } else if (rounds >= 20 && rounds < 25) { chosen = titles[4];
+    } else if (rounds >= 25 && rounds < 30) { chosen = titles[5];
+    } else if (rounds >= 30 && rounds < 35) { chosen = titles[6];
     } else {
-	return ("level "+(rounds%5)+" "+titles[7]+"</b><br/>");
+	chosen = titles[7];
     }
+    if (rounds >= 35) {
+	level = rounds - 35;
+    } else {
+	level = rounds % 5;
+    }
+    return ("<b>{ level "+level+" "+chosen+" }</b><br/>");
 }
