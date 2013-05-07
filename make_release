@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES="src/index.html src/edge_node.js  src/engine.js  src/jquery-1.9.1.min.js  src/mutator.js  src/output.js change.log"
+FILES="src/index.html src/edge_node.js src/engine.js src/jquery-1.9.1.min.js src/mutator.js src/output.js change.log"
 
 main()
 {
