@@ -57,7 +57,7 @@ function random_transform() {
 }
 
 function random_buffer_size() {
-    return Math.round(Math.random()*7)+1;
+    return Math.round(Math.random()*2)+2;
 }
 
 function shuffle(o){
