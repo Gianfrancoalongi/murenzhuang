@@ -24,6 +24,7 @@ function new_graph() {
 	next_step_and_draw: function() {
 	    this.next_step();
 	    this.make_graphviz_graph();
+	    this.display_level();
 	    this.display_history();
 	    switch_the_button_into_done_button();
 	},
@@ -34,14 +35,19 @@ function new_graph() {
 	    switch_the_button_into_next_step_button();
 	},
 
+	display_level: function() {
+	    $('#left').html( mrz_level(this.history.length) );
+	},
+
 	display_history: function() {
 	    var rounds = this.history.length;
 	    var newest = this.history.shift();	    
 	    var bold = '<b>'+newest+' :: '+rounds+' </b></br>';
 	    var normal = this.history.join('</br>');
-	    $('#left').html(bold+normal);
+	    $('#left').append(bold+normal);
 	    this.history.unshift(newest);
 	},
+
 
 	next_step: function() {
 	    var actions = this.determine_possible_actions();
@@ -529,4 +535,25 @@ function create_shape_dot_code(nodes,color) {
 	result.push( elem.generate_shape_dot_code(color) );
     }
     return result.join(';');
+}
+
+function mrz_level(rounds) {
+    var titles = ["n00b","script kiddie","code monkey","programmer","haxor","software craftsman","software artisan","grandmaster"];
+    if (rounds < 5) {
+	return ("level "+(rounds%5)+" "+titles[0]+"<br/>");
+    } else if (rounds >= 5 && rounds < 10 )  {
+	return ("level "+(rounds%5)+" "+titles[1]+"<br/>");
+    } else if (rounds >= 10 && rounds < 15) {
+	return ("level "+(rounds%5)+" "+titles[2]+"<br/>");
+    } else if (rounds >= 15 && rounds < 20) {
+	return ("level "+(rounds%5)+" "+titles[3]+"<br/>");
+    } else if (rounds >= 20 && rounds < 25) {
+	return ("level "+(rounds%5)+" "+titles[4]+"<br/>");
+    } else if (rounds >= 25 && rounds < 30) {
+	return ("level "+(rounds%5)+" "+titles[5]+"<br/>");
+    } else if (rounds >= 30 && rounds < 35) {
+	return ("level "+(rounds%5)+" "+titles[6]+"<br/>");
+    } else {
+	return ("level "+(rounds%5)+" "+titles[7]+"</b><br/>");
+    }
 }
