@@ -82,3 +82,9 @@ function remove_some(input) {
 	}
     }
 }
+
+function choose_one_randomly(possibles) {
+    var max=possibles.length - 1;
+    var index=Math.round(Math.random()*max);
+    return possibles[index];
+}

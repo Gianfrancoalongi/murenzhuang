@@ -25,3 +25,10 @@ test( "edge node dot code test", function() {
 	   'STDOUT',
 	   "Passed")
 });
+
+test( "mutator dot code test", function() {
+    var mutator = new_mutator("mutator_1");
+    equal( mutator.generate_dot_code(),
+	   'mutator_1',
+	   "Passed")
+});
