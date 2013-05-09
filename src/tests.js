@@ -18,3 +18,10 @@ test( "edge node shape code test", function() {
 	   'STDIN[shape=house];',
 	   "Passed")
 });
+
+test( "edge node dot code test", function() {
+    var node = new_edge_node("STDOUT", "invhouse");
+    equal( node.generate_dot_code(),
+	   'STDOUT',
+	   "Passed")
+});
