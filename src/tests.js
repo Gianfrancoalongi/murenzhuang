@@ -11,3 +11,10 @@ test( "output node dot_code test", function() {
 	   'file_69',
 	   "Passed")
 });
+
+test( "edge node shape code test", function() {
+    var node = new_edge_node("STDIN", "house");
+    equal( node.generate_shape_dot_code(),
+	   'STDIN[shape=house];',
+	   "Passed")
+});

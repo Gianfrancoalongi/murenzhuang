@@ -7,7 +7,7 @@ function new_edge_node(id,shape) {
 	    return this.id;
 	},
 
-	generate_shape_dot_code: function(color) { 
+	generate_shape_dot_code: function() { 
 	    return this.id+'[shape='+this.shape+'];'
 	}
     };
