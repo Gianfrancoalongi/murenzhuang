@@ -32,3 +32,13 @@ test( "mutator dot code test", function() {
 	   'mutator_1',
 	   "Passed")
 });
+
+test( "mutator shape dot code test", function() {
+    var mutator = new_mutator("mutator_2");
+    mutator.buffer = 2;
+    mutator.transform = "order";
+    mutator.args = [1,2];
+    equal( mutator.generate_shape_dot_code("black"),
+	   'mutator_2[label="Buffer:2\\nTransform:order\\n[x_i]:1,2",color=black,shape=hexagon]',
+	   "Passed")
+});

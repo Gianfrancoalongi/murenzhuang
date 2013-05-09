@@ -493,12 +493,6 @@ function colored_elements(array,color) {
     return dot_code.join(';');
 }
 
-function choose_one_randomly(possibles) {
-    var max=possibles.length - 1;
-    var index=Math.round(Math.random()*max);
-    return possibles[index];
-}
-
 function copy_path(chosen) {
     var new_edge=[];
     for(var i = 0; i < chosen.length; i++) {
