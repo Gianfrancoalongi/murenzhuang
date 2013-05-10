@@ -42,3 +42,12 @@ test( "mutator shape dot code test", function() {
 	   'mutator_2[label="Buffer:2\\nTransform:order\\n[x_i]:1,2",color=black,shape=hexagon]',
 	   "Passed")
 });
+
+test( "action distribution - nothing to remove test", function() {
+    var mutators = 0;
+    var files = 0;    
+    var distribution = action_probabilities(mutators,files);
+    equal( distribution.add_mutator, 1.0, "Passed");
+    equal( distribution.add_output,  0.0, "Passed");
+    equal( distribution.remove,      0.0, "Passed");
+});
