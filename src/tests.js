@@ -99,60 +99,26 @@ test( "action distribution - after 25 mutators added", function() {
     equal( distribution.remove,      0.90, "Passed");
 });
 
-test( "choose action test distr - mutators: 0", function() {
-    var mutators = 0;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator,
-	   1.0,
-	   "Passed");
+test( "distr correctness tests - mutators [0,1,5,10,15,20,25]", function() {
+    var mutators = [0,   1,   5,   10,  15,  20,  25];
+    var add_mut  = [1.0, 0.9, 0.7, 0.6, 0.4, 0.3, 0.05];
+    var add_out  = [0.0, 0.1, 0.2, 0.2, 0.2, 0.1, 0.05];
+    var remove   = [0.0, 0.0, 0.1, 0.2, 0.4, 0.6, 0.9];
+    var digits   = [1,   1,   1,   1,   1,   1,   2];
+    for(var i =0; i < 7;i++) {
+	var res = measure_50000_times_and_calculate_percentage(mutators[i],digits[i]);
+	equal( res.add_mutator, add_mut[i], "Add mutator "+i);
+	equal( res.add_output, add_out[i], "Add output "+i);
+	equal( res.remove, remove[i], "Remove "+i);
+    }
 });
 
-test( "choose action test distr - mutators: 1", function() {
-    var mutators = 1;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator, 0.9, "Passed");
-    equal( res.add_output, 0.1, "Passed");
-});
-
-test( "choose action test distr - mutators: 5", function() {
-    var mutators = 5;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator, 0.7, "Passed");
-    equal( res.add_output, 0.2, "Passed");    
-});
-
-test( "choose action test distr - mutators: 10", function() {
-    var mutators = 10;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator, 0.6, "Passed");
-    equal( res.add_output, 0.2, "Passed");
-});
-
-test("choose action test distr - mutators: 15", function() {
-    var mutators = 15;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator, 0.4, "Passed");
-    equal( res.add_output, 0.2, "Passed");    
-});
-
-test("choose action test distr - mutators: 20", function() {
-    var mutators = 20;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.add_mutator, 0.3, "Passed");
-    equal( res.add_output, 0.1, "Passed");
-});
-
-test("choose action test distr - mutators: 25", function() {
-    var mutators = 25;
-    var res = measure_1000_times_and_calculate_percentage(mutators);
-    equal( res.remove, 0.9, "Passed");
-});
-
-function measure_1000_times_and_calculate_percentage(mutators) {
+function measure_50000_times_and_calculate_percentage(mutators, digits) {
     var add_mutator = 0;
     var add_output = 0;
     var remove = 0;
-    for (var i=0; i < 1000; i++) {
+    var times = 50000;
+    for (var i=0; i < times; i++) {
 	switch (choose_action(mutators)) {
 	case ADD_MUTATOR:
 	    add_mutator++;
@@ -165,8 +131,8 @@ function measure_1000_times_and_calculate_percentage(mutators) {
 	    break;
 	}
     }
-    return obj = { add_mutator: (add_mutator/1000).toFixed(1),
-		   add_output: (add_output/1000).toFixed(1),
-		   remove: (remove/1000).toFixed(1)
+    return obj = { add_mutator: (add_mutator/times).toFixed(digits),
+		   add_output: (add_output/times).toFixed(digits),
+		   remove: (remove/times).toFixed(digits)
 		 };
 }
