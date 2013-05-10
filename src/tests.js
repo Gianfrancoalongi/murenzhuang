@@ -69,3 +69,12 @@ test( "action distribution - after 5 mutators added", function() {
     equal( distribution.add_output,  0.2, "Passed");
     equal( distribution.remove,      0.1, "Passed");
 });
+
+test( "action - distribution - after 10 mutators added", function() {
+    var mutators = 10;
+    var files = 0;    
+    var distribution = action_probabilities(mutators,files);
+    equal( distribution.add_mutator, 0.6, "Passed");
+    equal( distribution.add_output,  0.2, "Passed");
+    equal( distribution.remove,      0.2, "Passed");    
+});
