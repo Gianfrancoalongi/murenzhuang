@@ -119,3 +119,25 @@ test( "choose action test distr - mutators: 0", function() {
     }
     equal( add_mutator, 1000, "Passed")
 });
+
+test( "choose action test distr - mutators: 1", function() {
+    var mutators = 1;
+    var add_mutator = 0;
+    var add_output = 0;
+    var remove = 0;
+    for (var i=0; i < 1000; i++) {
+	switch (choose_action(mutators)) {
+	case ADD_MUTATOR:
+	    add_mutator++;
+	    break;
+	case ADD_OUTPUT:
+	    add_output++;
+	    break;
+	case REMOVE:
+	    remove++;
+	    break;
+	}
+    }
+    equal( (add_mutator/1000).toFixed(1), 0.9, "Passed")
+    equal( (add_output/1000).toFixed(1), 0.1, "Passed")
+});
