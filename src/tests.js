@@ -98,3 +98,24 @@ test( "action distribution - after 25 mutators added", function() {
     equal( distribution.add_output,  0.05, "Passed");
     equal( distribution.remove,      0.90, "Passed");
 });
+
+test( "choose action test distr - mutators: 0", function() {
+    var mutators = 0;
+    var add_mutator = 0;
+    var add_output = 0;
+    var remove = 0;
+    for (var i=0; i < 1000; i++) {
+	switch (choose_action(mutators)) {
+	case ADD_MUTATOR:
+	    add_mutator++;
+	    break;
+	case ADD_OUTPUT:
+	    add_output++;
+	    break;
+	case REMOVE:
+	    remove++;
+	    break;
+	}
+    }
+    equal( add_mutator, 1000, "Passed")
+});

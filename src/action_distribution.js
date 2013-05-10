@@ -26,3 +26,21 @@ function distribution(p_addmut, p_addout, p_remove) {
 		     remove: p_remove
 		   };
 }
+
+var ADD_MUTATOR = 'add_mutator';
+var ADD_OUTPUT = 'add_output';
+var REMOVE = 'remove';
+
+function choose_action(mutators) {
+    var distr = action_probabilities(mutators);
+    var rand = Math.random();
+
+    if ( distr.add_mutator > rand)
+	return ADD_MUTATOR;
+    
+    if ( (distr.add_output + distr.add_mutator) > rand )
+	return ADD_OUTPUT;
+
+    return REMOVE;
+	
+}
