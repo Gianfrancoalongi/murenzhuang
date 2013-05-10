@@ -4,6 +4,9 @@ function action_probabilities(mutators, files) {
     if (nothing_can_be_removed(mutators,files))
 	return distribution(1.0,0.0,0.0);
 
+    if (mutators > 4)
+	return distribution(0.7, 0.2, 0.1);
+
     if (mutators > 0)
 	return distribution(0.9, 0.1, 0.0);
 }
