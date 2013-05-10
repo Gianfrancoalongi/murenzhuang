@@ -101,27 +101,20 @@ test( "action distribution - after 25 mutators added", function() {
 
 test( "choose action test distr - mutators: 0", function() {
     var mutators = 0;
-    var add_mutator = 0;
-    var add_output = 0;
-    var remove = 0;
-    for (var i=0; i < 1000; i++) {
-	switch (choose_action(mutators)) {
-	case ADD_MUTATOR:
-	    add_mutator++;
-	    break;
-	case ADD_OUTPUT:
-	    add_output++;
-	    break;
-	case REMOVE:
-	    remove++;
-	    break;
-	}
-    }
-    equal( add_mutator, 1000, "Passed")
+    var res = measure_1000_times_and_calculate_percentage(mutators);
+    equal( res.add_mutator,
+	   1.0,
+	   "Passed");
 });
 
 test( "choose action test distr - mutators: 1", function() {
     var mutators = 1;
+    var res = measure_1000_times_and_calculate_percentage(mutators);
+    equal( res.add_mutator, 0.9, "Passed");
+    equal( res.add_output, 0.1, "Passed");
+});
+
+function measure_1000_times_and_calculate_percentage(mutators) {
     var add_mutator = 0;
     var add_output = 0;
     var remove = 0;
@@ -138,6 +131,8 @@ test( "choose action test distr - mutators: 1", function() {
 	    break;
 	}
     }
-    equal( (add_mutator/1000).toFixed(1), 0.9, "Passed")
-    equal( (add_output/1000).toFixed(1), 0.1, "Passed")
-});
+    return obj = { add_mutator: (add_mutator/1000).toFixed(1),
+		   add_output: (add_output/1000).toFixed(1),
+		   remove: (remove/1000).toFixed(1)
+		 };
+}
