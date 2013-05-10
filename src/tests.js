@@ -45,8 +45,7 @@ test( "mutator shape dot code test", function() {
 
 test( "action distribution - nothing to remove test", function() {
     var mutators = 0;
-    var files = 0;    
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 1.0, "Passed");
     equal( distribution.add_output,  0.0, "Passed");
     equal( distribution.remove,      0.0, "Passed");
@@ -54,8 +53,7 @@ test( "action distribution - nothing to remove test", function() {
 
 test( "action distribution - after one mutator added", function() {
     var mutators = 1;
-    var files = 0;    
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.9, "Passed");
     equal( distribution.add_output,  0.1, "Passed");
     equal( distribution.remove,      0.0, "Passed");    
@@ -63,8 +61,7 @@ test( "action distribution - after one mutator added", function() {
 
 test( "action distribution - after 5 mutators added", function() {
     var mutators = 5;
-    var files = 0;    
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.7, "Passed");
     equal( distribution.add_output,  0.2, "Passed");
     equal( distribution.remove,      0.1, "Passed");
@@ -72,8 +69,7 @@ test( "action distribution - after 5 mutators added", function() {
 
 test( "action - distribution - after 10 mutators added", function() {
     var mutators = 10;
-    var files = 0;    
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.6, "Passed");
     equal( distribution.add_output,  0.2, "Passed");
     equal( distribution.remove,      0.2, "Passed");    
@@ -81,8 +77,7 @@ test( "action - distribution - after 10 mutators added", function() {
 
 test( "action distribution - after 15 mutators added", function() {
     var mutators = 15;
-    var files = 0;
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.4, "Passed");
     equal( distribution.add_output,  0.2, "Passed");
     equal( distribution.remove,      0.4, "Passed");
@@ -90,8 +85,7 @@ test( "action distribution - after 15 mutators added", function() {
 
 test( "action distribution - after 20 mutators added", function() {
     var mutators = 20;
-    var files = 0;
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.3, "Passed");
     equal( distribution.add_output,  0.1, "Passed");
     equal( distribution.remove,      0.6, "Passed");
@@ -99,8 +93,7 @@ test( "action distribution - after 20 mutators added", function() {
 
 test( "action distribution - after 25 mutators added", function() {
     var mutators = 25;
-    var files = 0;
-    var distribution = action_probabilities(mutators,files);
+    var distribution = action_probabilities(mutators);
     equal( distribution.add_mutator, 0.05, "Passed");
     equal( distribution.add_output,  0.05, "Passed");
     equal( distribution.remove,      0.90, "Passed");
