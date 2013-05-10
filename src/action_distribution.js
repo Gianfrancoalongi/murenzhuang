@@ -1,8 +1,11 @@
 var ADD_MUTATOR = 'add_mutator';
 
-function action_probabilities(mutators, files) {
+function action_probabilities(mutators, files) {    
     if (nothing_can_be_removed(mutators,files))
 	return distribution(1.0,0.0,0.0);
+
+    if (mutators > 0)
+	return distribution(0.9, 0.1, 0.0);
 }
 
 function nothing_can_be_removed(mutators, files) {

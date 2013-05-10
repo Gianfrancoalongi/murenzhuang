@@ -51,3 +51,12 @@ test( "action distribution - nothing to remove test", function() {
     equal( distribution.add_output,  0.0, "Passed");
     equal( distribution.remove,      0.0, "Passed");
 });
+
+test( "action distribution - after one mutator added", function() {
+    var mutators = 1;
+    var files = 0;    
+    var distribution = action_probabilities(mutators,files);
+    equal( distribution.add_mutator, 0.9, "Passed");
+    equal( distribution.add_output,  0.1, "Passed");
+    equal( distribution.remove,      0.0, "Passed");    
+});
