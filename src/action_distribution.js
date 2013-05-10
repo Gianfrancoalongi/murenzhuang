@@ -1,5 +1,3 @@
-var ADD_MUTATOR = 'add_mutator';
-
 function action_probabilities(mutators) {    
     if (mutators > 24)
 	return distribution(0.05, 0.05, 0.9);
