@@ -114,6 +114,13 @@ test( "choose action test distr - mutators: 1", function() {
     equal( res.add_output, 0.1, "Passed");
 });
 
+test( "choose action test distr - mutators: 5", function() {
+    var mutators = 5;
+    var res = measure_1000_times_and_calculate_percentage(mutators);
+    equal( res.add_mutator, 0.7, "Passed");
+    equal( res.add_output, 0.2, "Passed");    
+});
+
 function measure_1000_times_and_calculate_percentage(mutators) {
     var add_mutator = 0;
     var add_output = 0;
