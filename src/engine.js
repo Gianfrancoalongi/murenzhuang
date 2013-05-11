@@ -1,9 +1,5 @@
 var STDIN = new_edge_node("STDIN","house");
 var STDOUT = new_edge_node("STDOUT","invhouse");
-var ADD_MUTATOR = 'add_mutator';
-var ADD_OUTPUT = 'add_output';
-var REMOVE_MUTATOR_NODE = 'remove_mutator_node';
-var REMOVE_OUTPUT_NODE = 'remove_output_node';
 
 function new_graph() { 
 
@@ -45,24 +41,10 @@ function new_graph() {
 
 
 	next_step: function() {
-	    var actions = this.determine_possible_actions();
-	    var chosen_action = choose_one_randomly(actions);
-	    this.next_step_based_on_action(chosen_action);
-	    this.history.unshift(chosen_action);
-	},
-
-	determine_possible_actions: function() {
-	    var possible_actions = [ADD_MUTATOR,
-				    ADD_MUTATOR,
-				    ADD_MUTATOR,
-				    ADD_OUTPUT];
-	    if ( this.there_are_any_output_nodes() ) {
-		possible_actions.push(REMOVE_OUTPUT_NODE);
-	    }
-	    if ( this.there_are_any_mutator_nodes() ) {
-		possible_actions.push(REMOVE_MUTATOR_NODE);
-	    }
-	    return possible_actions;
+	    var action = choose_action(this.mutators.length, 
+				       this.files.length);
+	    this.next_step_based_on_action(action);
+	    this.history.unshift(action);
 	},
 
 	next_step_based_on_action: function(action) {
@@ -73,10 +55,10 @@ function new_graph() {
 	    case ADD_OUTPUT:
 		this.add_output_node_randomly_from_input_node_or_mutator_node();
 		break;
-	    case REMOVE_MUTATOR_NODE:
+	    case REMOVE_MUTATOR:
 		this.remove_random_mutator_node();
 		break;
-	    case REMOVE_OUTPUT_NODE:
+	    case REMOVE_OUTPUT:
 		this.remove_random_output_node();
 		break;
 	    }
