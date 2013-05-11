@@ -1,3 +1,7 @@
+V1.2    Golden Cherry Deluxe Platinum
+	Probability of getting 'add' operations is greater when the system is smaller
+	And probability of getting 'remove' operations increase as the systems grows
+	See this for reference https://f.cloud.github.com/assets/302673/491584/a6cc7e0c-ba40-11e2-9aee-c9828168cb66.png
 V1.1    Golden Cherry Deluxe
 	Added level system which is displayed at the top of the history
 	the history will no longer show the current iteration.
