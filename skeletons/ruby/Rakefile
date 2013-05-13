@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+task :default => :test
+
+task :test do
+  ruby "tc_std.rb"
+end
+
