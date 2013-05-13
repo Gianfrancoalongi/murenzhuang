@@ -4,10 +4,7 @@ require "test/unit"
 class TestMRZ < Test::Unit::TestCase
 
   def test_root_program
-    old_stdout = $stdout.clone
-    $stdout.reopen("std_out_result", "w+")    
-    stdin("hello world")
-    $stdout.reopen old_stdout
+    with_stdout_redirected { stdin("hello world") }
     assert_equal("hello world\n", from_stdin())
   end
 
@@ -19,4 +16,11 @@ end
 
 def from_stdin
   File.read("std_out_result")
+end
+
+def with_stdout_redirected
+  old_stdout = $stdout.clone
+  $stdout.reopen("std_out_result", "w+")    
+  yield
+  $stdout.reopen old_stdout
 end
