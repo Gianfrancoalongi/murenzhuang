@@ -1,6 +1,13 @@
 #!/bin/bash
 
-FILES="src/index.html src/edge_node.js src/engine.js src/jquery-1.9.1.min.js src/mutator.js src/output.js change.log"
+FILES=( src/index.html \
+        src/edge_node.js \
+        src/engine.js \
+        src/jquery-1.9.1.min.js \
+        src/mutator.js \
+        src/output.js \
+        src/action_distribution.js \
+        change.log )
 
 main()
 {
@@ -10,12 +17,12 @@ main()
 
 make_tar_release()
 {
-    tar cvf release/latest.tar ${FILES}
+    tar cvf release/latest.tar ${FILES[@]}
 }
 
 make_zip_release()
 {
-    zip release/latest.zip ${FILES}
+    zip release/latest.zip ${FILES[@]}
 }
 
 main
