@@ -1,3 +1,5 @@
+V1.2.1  Golden Cherry Deluxe Platinum Lensflare
+	Release (tar/zip) now includes skeletons for C#/C++/Erlang/Java/Perl/Python/Ruby
 V1.2    Golden Cherry Deluxe Platinum
 	Probability of getting 'add' operations is greater when the system is smaller
 	And probability of getting 'remove' operations increase as the systems grows

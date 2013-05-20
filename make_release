@@ -8,6 +8,7 @@ FILES=( src/index.html \
         src/output.js \
         src/action_distribution.js \
         change.log )
+SKELETONS=skeletons/
 
 main()
 {
@@ -17,12 +18,12 @@ main()
 
 make_tar_release()
 {
-    tar cvf release/latest.tar ${FILES[@]}
+    tar cvf release/latest.tar ${FILES[@]} ${SKELETONS}
 }
 
 make_zip_release()
 {
-    zip release/latest.zip ${FILES[@]}
+    zip release/latest.zip ${FILES[@]} -r ${SKELETONS}
 }
 
 main
