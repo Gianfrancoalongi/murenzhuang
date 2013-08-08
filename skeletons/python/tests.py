@@ -14,7 +14,7 @@ class TestMurenzhuang(unittest.TestCase):
         mock.patch.stopall()
 
     def test_echoes_stdin(self):
-        std.murenzhuang("hello world")
+        std.murenzhuang('hello world')
         self.assertEqual('hello world\n', self.stdout.getvalue())
 
 
