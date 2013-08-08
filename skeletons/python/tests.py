@@ -18,8 +18,5 @@ class TestMurenzhuang(unittest.TestCase):
         self.assertEqual('hello world\n', self.stdout.getvalue())
 
 
-def main():
-    unittest.main()
-
 if __name__ == '__main__':
-    main()
+    unittest.main()
