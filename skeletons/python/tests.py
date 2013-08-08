@@ -6,15 +6,15 @@ import mock
 import std
 
 
-class MyTest(unittest.TestCase):
+class TestMurenzhuang(unittest.TestCase):
     def setUp(self):
         self.stdout = mock.patch('sys.stdout', new_callable=StringIO).start()
 
     def tearDown(self):
         mock.patch.stopall()
 
-    def test_root_program(self):
-        std.input("hello world")
+    def test_echoes_stdin(self):
+        std.murenzhuang("hello world")
         self.assertEqual('hello world\n', self.stdout.getvalue())
 
 
