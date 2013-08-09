@@ -1,24 +1,22 @@
 import unittest
-import sys
-import os
+from cStringIO import StringIO
+
+import mock
+
 import std
 
-class MyTest(unittest.TestCase):
-    
-    def test_root_program(self):
-        sys.stdout = open('std_out_result', 'w')
-        std.input("hello world")
-        sys.stdout.close()
-        self.assertEqual( in_stdout(), "hello world\n")
-        
+
+class TestMurenzhuang(unittest.TestCase):
+    def setUp(self):
+        self.stdout = mock.patch('sys.stdout', new_callable=StringIO).start()
+
     def tearDown(self):
-        os.remove('std_out_result')
+        mock.patch.stopall()
 
-def in_stdout():
-    return open('std_out_result', 'r').read()
+    def test_echoes_stdin(self):
+        std.murenzhuang('hello world')
+        self.assertEqual('hello world\n', self.stdout.getvalue())
 
-def main():
-    unittest.main()
 
 if __name__ == '__main__':
-    main()
+    unittest.main()

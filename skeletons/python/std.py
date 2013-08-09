@@ -1,3 +1,2 @@
-
-def input(str):
+def murenzhuang(str):
     print str
